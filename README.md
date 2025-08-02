@@ -12,6 +12,16 @@ The [Kagi Search API](https://kagi.com/api) requires a separate API key. If you 
 - Parsing Kagi's HTML search results into structured JSON
 - Matching the official API response format for compatibility
 
+## Tips
+
+Kagi's search operators work, of course: [Kagi Keyboard Shortcuts and Search Operators | Kagi's Docs](https://help.kagi.com/kagi/features/search-operators.html#search-operators-1).
+
+Since you're basically using the web search, this tool inherits the setting in your account. For example you can:
+
+- Block or promote websites (results personalization)
+- Select to receive longer or shorter search snippets (under [Kagi Settings → Search](https://kagi.com/settings/search))
+
+
 ## Showcase
 
 ### Basic search with environment variable
@@ -108,6 +118,8 @@ The output is wrapped in a `data` object for consistency with API standards.
 ## Author
 
 Carlo Zottmann, <carlo@zottmann.dev>, https://c.zottmann.dev, https://github.com/czottmann
+
+This project is neither affiliated with nor endorsed by Kagi. I'm just a very happy customer.
 
 > [!TIP]
 > ### 💡 Did you know?
