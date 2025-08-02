@@ -16,13 +16,14 @@ The tool uses Commander to create a single-command CLI following the structure i
 
 ### Authentication to Kagi
 
-The user must provide a "Kagi session token" either by `--token` flag or `KAGI_SESSION_TOKEN` environment variable. This token is passed as URL parameter `token` when querying Kagi.
+The user must provide a "Kagi session token" either by `--token` flag or `KAGI_SESSION_TOKEN` environment variable. This token is passed as `kagi_session` cookie when querying Kagi.
 
 ### HTTP Requests
 
-- **URL Format**: `https://kagi.com/search?q={query}&token={token}`
+- **URL Format**: `https://kagi.com/search?q={query}`
+- **Authentication**: Session token passed as `kagi_session` cookie
 - **User-Agent**: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Safari/605.1.15`
-- **Method**: GET with no additional headers
+- **Method**: GET with cookie header
 
 ### HTML Parsing Strategy
 
