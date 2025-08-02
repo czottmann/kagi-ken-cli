@@ -4,7 +4,7 @@
   "description": "A tool to search Kagi (web, not API), outputting results in a similar schema as the Kagi Search API. Uses Kagi session link/token for easy authentication.",
   "main": "index.js",
   "bin": {
-    "kagi-search": "./index.js"
+    "kagi-search": "index.js"
   },
   "files": [
     "index.js",
@@ -13,9 +13,7 @@
     "README.md",
     "LICENSE.md"
   ],
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "keywords": [
     "kagi",
     "search"
