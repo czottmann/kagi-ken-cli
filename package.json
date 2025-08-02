@@ -1,0 +1,37 @@
+{
+  "name": "kagi-web-search",
+  "version": "1.0.0",
+  "description": "A tool to search Kagi (web, not API), outputting results in a similar schema as the Kagi Search API. Uses Kagi session link/token for easy authentication.",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "src/",
+    "package.json",
+    "README.md",
+    "LICENSE.md"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "kagi",
+    "search"
+  ],
+  "author": "Carlo Zottmann <carlo@zottmann.dev>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^14.0.0"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/czottmann/TODO.git"
+  },
+  "bugs": {
+    "url": "https://github.com/czottmann/TODO/issues"
+  },
+  "homepage": "https://github.com/czottmann/TODO#readme"
+}
