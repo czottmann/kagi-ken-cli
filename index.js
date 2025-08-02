@@ -8,6 +8,26 @@
 const { Command } = require("commander");
 const { version } = require("./package.json");
 const { performSearch } = require("./src/search");
+const os = require("os");
+const fs = require("fs");
+const path = require("path");
+
+/**
+ * Reads Kagi session token from ~/.kagi_session_token file
+ * @returns {string|null} Token content (trimmed) or null if file doesn't exist/is empty
+ */
+function readTokenFromFile() {
+  try {
+    const tokenPath = path.join(os.homedir(), ".kagi_session_token");
+    const content = fs.readFileSync(tokenPath, "utf8").trim();
+    return content || null;
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return null; // File doesn't exist
+    }
+    throw new Error(`Unable to read token file: ${error.message}`);
+  }
+}
 
 /**
  * Main CLI application entry point.
@@ -29,11 +49,11 @@ function main() {
       `
 Examples:
   $ kagi-search "steve jobs" --token a1b2c3d4e5f6g7h8i9j0
-  $ export KAGI_SESSION_TOKEN=a1b2c3d4e5f6g7h8i9j0
+  $ echo "a1b2c3d4e5f6g7h8i9j0" > ~/.kagi_session_token
   $ kagi-search "search query"
 
 Authentication:
-  Provide session token via --token flag or KAGI_SESSION_TOKEN environment variable.
+  Provide session token via --token flag or create ~/.kagi_session_token file.
   Get your session token from Kagi.com while logged in.
       `,
     )
@@ -43,14 +63,14 @@ Authentication:
         return;
       }
       try {
-        const token = options.token || process.env.KAGI_SESSION_TOKEN;
+        const token = options.token || readTokenFromFile();
 
         if (!token) {
           console.error(
             JSON.stringify(
               {
                 error:
-                  "Authentication required: provide --token flag or set KAGI_SESSION_TOKEN environment variable",
+                  "Authentication required: provide --token flag or create ~/.kagi_session_token file",
               },
               null,
               2,

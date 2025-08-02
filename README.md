@@ -16,14 +16,14 @@ The [Kagi Search API](https://help.kagi.com/kagi/api/overview.html) requires a s
 
 ## Showcase
 
-### Basic search with environment variable
+### Basic search with token file
 
 ```bash
 # Show help
 kagi-search
 
 # Set your session token once
-export KAGI_SESSION_TOKEN=your_session_token_here
+echo "your_session_token_here" > ~/.kagi_session_token
 
 # Search and get JSON results
 kagi-search "steve jobs"
@@ -91,13 +91,13 @@ Since you're basically using the web search, **this tool inherits the setting in
 - Block or promote websites (results personalization)
 - Select to receive longer or shorter search snippets (under [Kagi Settings → Search](https://kagi.com/settings/search))
 
-**For LLM or agent use,** I recommend to prevent bleeding your secret session token into the wild, and going with the included [kagi-search-wrapper.sh](kagi-search-wrapper.sh) instead. It's a tiny shell wrapper around the tool which loads the token from a file in your home folder. (Read the file, it's simple.)
+**For LLM or agent use,** the tool now reads tokens from `~/.kagi_session_token` by default, preventing token exposure in command lines or environment variables. You can also use the included [kagi-search-wrapper.sh](kagi-search-wrapper.sh) wrapper for additional security.
 
 
 ## Technical Details
 
 - **HTML Parsing**: Uses Kagi's `/html/search` endpoint for server-side rendered results
-- **Authentication**: Session token via Cookie header
+- **Authentication**: Session token via Cookie header (from --token flag or ~/.kagi_session_token file)
 - **Error Handling**: Network errors, invalid tokens, parsing failures
 - **User Agent**: Mimics Safari browser for compatibility
 
