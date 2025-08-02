@@ -1,6 +1,6 @@
 # Testing
 
-<!-- Generated: 2025-08-02T19:23:00+02:00 -->
+<!-- Generated: 2025-08-02T23:59:27+02:00 -->
 
 ## Overview
 
@@ -12,7 +12,7 @@ The project currently has no formal test suite implemented. Testing is performed
 
 **CLI Validation** - Manual execution of CLI commands with various inputs
 - Test basic help commands: `./index.js`, `./index.js help`, `./index.js --help`
-- Test authentication methods: `--token` flag vs `KAGI_SESSION_TOKEN` environment variable
+- Test authentication methods: `--token` flag vs `~/.kagi_session_token` file
 - Test search queries with valid session tokens
 - Test error conditions: missing token, invalid token, network failures
 
@@ -25,7 +25,7 @@ The project currently has no formal test suite implemented. Testing is performed
 
 **Unit Tests** - Test individual components in isolation
 - `src/search.js` - HTTP request and response parsing functions
-- Authentication token validation logic
+- Authentication token file reading logic (`readTokenFromFile()`)
 - HTML parsing with cheerio selectors
 - JSON output formatting
 
@@ -36,7 +36,7 @@ The project currently has no formal test suite implemented. Testing is performed
 
 **CLI Tests** - Test command-line interface behavior
 - Argument parsing with Commander.js
-- Environment variable handling
+- Token file reading and fallback behavior
 - Help text display
 - Exit codes for success/error conditions
 
@@ -86,9 +86,9 @@ npm run test:coverage      # Generate coverage report
 
 **With Valid Token**
 ```bash
-export KAGI_SESSION_TOKEN=your_token_here
+echo "your_token_here" > ~/.kagi_session_token
 ./index.js "javascript"    # Should return JSON search results
-./index.js "test" --token different_token  # Token flag overrides env var
+./index.js "test" --token different_token  # Token flag overrides file
 ```
 
 **Error Conditions**
@@ -135,8 +135,9 @@ tests/
 
 ### Key Testing Considerations
 
-**Authentication Testing** - Mock Kagi session validation without real tokens
+**Authentication Testing** - Mock Kagi session validation without real tokens, test file reading scenarios
 **HTML Parsing** - Use `search-result.html` as test fixture for consistent parsing validation
 **Error Handling** - Test all error conditions specified in `SPEC.md` (lines 57-68)
 **Output Format** - Validate JSON structure matches API schema from `SPEC.md` (lines 44-51)
 **CLI Integration** - Test Commander.js argument parsing and help text generation
+**File System Testing** - Test token file reading, missing files, permission errors, empty files

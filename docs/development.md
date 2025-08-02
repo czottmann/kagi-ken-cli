@@ -1,4 +1,4 @@
-<!-- Generated: 2025-08-02T19:22:46+02:00 -->
+<!-- Generated: 2025-08-02T23:59:27+02:00 -->
 
 # Development Guide
 
@@ -94,20 +94,38 @@ program
 Token authentication follows a hierarchical fallback pattern:
 
 ```javascript
-// From index.js:46-60
-const token = options.token || process.env.KAGI_SESSION_TOKEN;
+// From index.js:66-80
+const token = options.token || readTokenFromFile();
 
 if (!token) {
   console.error(
     JSON.stringify(
       {
-        error: "Authentication required: provide --token flag or set KAGI_SESSION_TOKEN environment variable",
+        error: "Authentication required: provide --token flag or create ~/.kagi_session_token file",
       },
       null,
       2,
     ),
   );
   process.exit(1);
+}
+```
+
+The `readTokenFromFile()` helper function safely reads from `~/.kagi_session_token`:
+
+```javascript
+// From index.js:15-30
+function readTokenFromFile() {
+  try {
+    const tokenPath = path.join(os.homedir(), ".kagi_session_token");
+    const content = fs.readFileSync(tokenPath, "utf8").trim();
+    return content || null;
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return null; // File doesn't exist
+    }
+    throw new Error(`Unable to read token file: ${error.message}`);
+  }
 }
 ```
 
@@ -186,7 +204,12 @@ Test error conditions by modifying token or network connectivity:
 // Test invalid token
 kagi-search "query" --token invalid
 
-// Test missing token  
+// Test missing token (no file and no flag)
+rm ~/.kagi_session_token
+kagi-search "query"
+
+// Test with token file
+echo "your_token_here" > ~/.kagi_session_token
 kagi-search "query"
 
 // Test network error (modify URL in src/search.js:25)

@@ -1,4 +1,4 @@
-<!-- Generated: 2025-08-02T19:22:46+02:00 -->
+<!-- Generated: 2025-08-02T23:59:27+02:00 -->
 
 # Architecture
 
@@ -12,7 +12,7 @@ The architecture follows a clean separation of concerns with the CLI layer handl
 
 **CLI Layer** - Command-line interface and program entry point in `index.js` (lines 16-71)
 - Argument parsing and validation using Commander.js
-- Authentication token resolution from flags or environment variables
+- Authentication token resolution from flags or `~/.kagi_session_token` file
 - Error handling and JSON output formatting
 
 **Search Engine** - Core search functionality in `src/search.js` (lines 22-50)
@@ -27,7 +27,7 @@ The architecture follows a clean separation of concerns with the CLI layer handl
 
 **Authentication System** - Token-based authentication across both files
 - Session token validation and cookie management in HTTP headers
-- Environment variable and CLI flag precedence handling
+- File-based token storage and CLI flag precedence handling
 
 ## Key Files
 
@@ -39,7 +39,7 @@ The architecture follows a clean separation of concerns with the CLI layer handl
 
 ## Data Flow
 
-**Input Processing** - CLI arguments flow from `index.js:40` action handler → token resolution at `index.js:46` → query validation at `index.js:41-44`
+**Input Processing** - CLI arguments flow from `index.js:40` action handler → token resolution at `index.js:66` (flag or file) → query validation at `index.js:41-44`
 
 **HTTP Request Flow** - Search query and token passed to `performSearch` in `src/search.js:22` → URL construction with encoded query at `src/search.js:25` → HTTP request with session cookie at `src/search.js:29` → response validation at `src/search.js:34-39`
 

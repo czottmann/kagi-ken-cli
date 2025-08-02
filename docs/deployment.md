@@ -1,4 +1,4 @@
-<!-- Generated: 2025-08-02T19:22:47+02:00 -->
+<!-- Generated: 2025-08-02T23:59:27+02:00 -->
 
 # Deployment
 
@@ -135,6 +135,6 @@ kagi-search --help
 
 No API keys or sensitive configuration required for deployment. Authentication is handled per-user via:
 - `--token` flag at runtime
-- `KAGI_SESSION_TOKEN` environment variable
+- `~/.kagi_session_token` file (preferred method)
 
 Users obtain session tokens from their Kagi.com browser sessions as documented in SPEC.md.

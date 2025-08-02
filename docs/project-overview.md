@@ -1,4 +1,4 @@
-<!-- Generated: 2025-08-02T19:22:45+02:00 -->
+<!-- Generated: 2025-08-02T23:59:27+02:00 -->
 
 # Project Overview
 
@@ -26,7 +26,7 @@ The project bridges the gap between web scraping and API access by providing a c
 
 **HTTP Requests** - Node.js built-in fetch API for HTTPS requests to Kagi.com with cookie-based session authentication (`src/search.js` lines 24-32)
 
-**Authentication Method** - Kagi session tokens passed as `kagi_session` cookies, supporting both CLI flags and environment variables (`index.js` lines 46-60)
+**Authentication Method** - Kagi session tokens passed as `kagi_session` cookies, supporting both CLI flags and `~/.kagi_session_token` file (`index.js` lines 66-80)
 
 **Output Format** - JSON structured to match Kagi Search API schema with search results (t: 0) and related searches (t: 1) (`src/search.js` lines 119-124)
 
