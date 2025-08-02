@@ -124,4 +124,12 @@ Carlo Zottmann, <carlo@zottmann.dev>, https://c.zottmann.dev, https://github.com
 
 ## Documentation
 
-The codebase includes comprehensive documentation for understanding the Kagi search result parsing, authentication flow, and CLI structure. Key implementation details are found in the search module's HTML parsing functions and the main CLI argument handling.
+- **[Project Overview](docs/project-overview.md)** - Purpose, technology stack, platform support with file references
+- **[Architecture](docs/architecture.md)** - Component map, data flow, key functions with line numbers
+- **[Build System](docs/build-system.md)** - Build workflows, installation, and distribution
+- **[Testing](docs/testing.md)** - Testing approach, manual validation, and future test recommendations
+- **[Development](docs/development.md)** - Code patterns, CLI structure, authentication flow with examples
+- **[Deployment](docs/deployment.md)** - Package distribution, npm installation, and platform setup
+- **[Files Catalog](docs/files.md)** - Complete file organization, dependencies, naming conventions
+
+LLMs will find specific file paths, line numbers for key functions, actual code examples from the codebase, and practical guidance for understanding and extending the Kagi search functionality.
