@@ -71,7 +71,7 @@ Get your Kagi session token:
 1. Visit [Kagi Settings](https://kagi.com/settings/user_details) in your browser
 2. Copy the **Session Link**
 3. Extract the `token` value from the link
-4. Use that value as your session token
+4. Use that value as your session token: save to `~/.kagi_session_token` or use with the `--token` flag
 
 **Security Note**: Keep your session token private. It provides access to your Kagi account.
 
@@ -91,7 +91,7 @@ Since you're basically using the web search, **this tool inherits the setting in
 - Block or promote websites (results personalization)
 - Select to receive longer or shorter search snippets (under [Kagi Settings → Search](https://kagi.com/settings/search))
 
-**For LLM or agent use,** the tool now reads tokens from `~/.kagi_session_token` by default, preventing token exposure in command lines or environment variables. You can also use the included [kagi-search-wrapper.sh](kagi-search-wrapper.sh) wrapper for additional security.
+**For LLM or agent use,** the tool reads the token from `~/.kagi_session_token` by default, preventing token exposure in command lines or environment variables.
 
 
 ## Technical Details
