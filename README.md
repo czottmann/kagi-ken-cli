@@ -4,22 +4,14 @@ A Node.js CLI tool that searches Kagi.com using session tokens and returns struc
 
 Unlike the official Kagi Search API which requires API access, this tool uses your existing Kagi session to perform searches and parse the HTML results into the same JSON format.
 
+
 ## Why?
 
-The [Kagi Search API](https://kagi.com/api) requires a separate API key. If you already have a Kagi subscription and want to programmatically search from scripts or tools, this CLI provides an alternative by:
+The [Kagi Search API](https://help.kagi.com/kagi/api/overview.html) requires a separate API key, which are invite-only at the moment. If you already have a Kagi subscription and want to programmatically search from scripts or tools, this CLI provides an alternative by:
 
 - Using your existing Kagi session token (no additional API costs)
 - Parsing Kagi's HTML search results into structured JSON
 - Matching the official API response format for compatibility
-
-## Tips
-
-Kagi's search operators work, of course: [Kagi Keyboard Shortcuts and Search Operators | Kagi's Docs](https://help.kagi.com/kagi/features/search-operators.html#search-operators-1).
-
-Since you're basically using the web search, this tool inherits the setting in your account. For example you can:
-
-- Block or promote websites (results personalization)
-- Select to receive longer or shorter search snippets (under [Kagi Settings → Search](https://kagi.com/settings/search))
 
 
 ## Showcase
@@ -44,7 +36,15 @@ kagi-search "steve jobs"
 kagi-search "machine learning" --token your_session_token_here
 ```
 
+
 ### JSON output format
+
+Results match the Kagi Search API schema:
+
+- **Search Results** (`t: 0`): Web search results with `url`, `title`, `snippet`
+- **Related Searches** (`t: 1`): Suggested search terms in `list` array
+
+The output is wrapped in a `data` object for consistency with API standards.
 
 ```json
 {
@@ -63,6 +63,7 @@ kagi-search "machine learning" --token your_session_token_here
 }
 ```
 
+
 ## Authentication
 
 Get your Kagi session token:
@@ -74,39 +75,24 @@ Get your Kagi session token:
 
 **Security Note**: Keep your session token private. It provides access to your Kagi account.
 
+
 ## Installation
 
 ```bash
 npm install -g git@github.com:czottmann/kagi-web-search.git
 ```
 
+## Tips
 
-## Quick Commands
+Kagi's **search operators** work, of course: [Kagi Keyboard Shortcuts and Search Operators | Kagi's Docs](https://help.kagi.com/kagi/features/search-operators.html#search-operators-1).
 
-```bash
-# Show help
-./index.js --help
+Since you're basically using the web search, **this tool inherits the setting in your account**. For example you can:
 
-# Search with environment token
-export KAGI_SESSION_TOKEN=your_token
-./index.js "search query"
+- Block or promote websites (results personalization)
+- Select to receive longer or shorter search snippets (under [Kagi Settings → Search](https://kagi.com/settings/search))
 
-# Search with flag
-./index.js "search query" --token your_token
+**For LLM or agent use,** I recommend to prevent bleeding your secret session token into the wild, and going with the included [kagi-search-wrapper.sh](kagi-search-wrapper.sh) instead. It's a tiny shell wrapper around the tool which loads the token from a file in your home folder. (Read the file, it's simple.)
 
-# Example searches
-./index.js "javascript async await"
-./index.js "climate change 2024" --token abc123
-```
-
-## Output Format
-
-Results match the Kagi Search API schema:
-
-- **Search Results** (`t: 0`): Web search results with `url`, `title`, `snippet`
-- **Related Searches** (`t: 1`): Suggested search terms in `list` array
-
-The output is wrapped in a `data` object for consistency with API standards.
 
 ## Technical Details
 
@@ -117,7 +103,7 @@ The output is wrapped in a `data` object for consistency with API standards.
 
 ## Author
 
-Carlo Zottmann, <carlo@zottmann.dev>, https://c.zottmann.dev, https://github.com/czottmann
+Carlo Zottmann, <carlo@zottmann.dev>, https://c.zottmann.dev, https://github.com/czottmann.
 
 This project is neither affiliated with nor endorsed by Kagi. I'm just a very happy customer.
 
