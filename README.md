@@ -23,7 +23,7 @@ The [Kagi Search API](https://help.kagi.com/kagi/api/overview.html) requires a s
 kagi-search
 
 # Set your session token once
-echo "your_session_token_here" > ~/.kagi_session_token
+echo "$kagi_session_token" > ~/.kagi_session_token
 
 # Search and get JSON results
 kagi-search "steve jobs"
@@ -33,7 +33,7 @@ kagi-search "steve jobs"
 
 ```bash
 # Pass token directly
-kagi-search "machine learning" --token your_session_token_here
+kagi-search "steve jobs" --token $kagi_session_token
 ```
 
 
@@ -71,9 +71,10 @@ Get your Kagi session token:
 1. Visit [Kagi Settings](https://kagi.com/settings/user_details) in your browser
 2. Copy the **Session Link**
 3. Extract the `token` value from the link
-4. Use that value as your session token: save to `~/.kagi_session_token` or use with the `--token` flag
+4. Use that value as your session token: save to `~/.kagi_session_token`, alternatively use with the `--token` flag
 
-**Security Note**: Keep your session token private. It provides access to your Kagi account.
+> [!WARNING]
+> **Security Note**: Keep your session token private. It provides access to your Kagi account.
 
 
 ## Installation
@@ -108,9 +109,9 @@ Carlo Zottmann, <carlo@zottmann.dev>, https://c.zottmann.dev, https://github.com
 This project is neither affiliated with nor endorsed by Kagi. I'm just a very happy customer.
 
 > [!TIP]
-> ### 💡 Did you know?
->
 > I make Shortcuts-related macOS & iOS productivity apps like [Actions For Obsidian](https://actions.work/actions-for-obsidian), [Browser Actions](https://actions.work/browser-actions) (which adds Shortcuts support for several major browsers), and [BarCuts](https://actions.work/barcuts) (a surprisingly useful contextual Shortcuts launcher). Check them out!
+
+---
 
 ## Key Files
 
