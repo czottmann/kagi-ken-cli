@@ -1,6 +1,6 @@
 {
   "name": "kagi-web-search",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A tool to search Kagi (web, not API), outputting results in a similar schema as the Kagi Search API. Uses Kagi session link/token for easy authentication.",
   "main": "index.js",
   "bin": {
