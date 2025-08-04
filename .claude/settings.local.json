@@ -2,12 +2,7 @@
   "permissions": {
     "allow": [
       "Bash(node:*)",
-      "Bash(./index.js --help)",
-      "Bash(./index.js \"test query\")",
-      "Bash(./index.js \"steve jobs\")",
-      "Bash(./index.js)",
-      "Bash(~/bin/kagi-search-wrapper.sh:*)",
-      "Bash(./index.js help search)"
+      "Bash(./index.js:*)"
     ],
     "deny": []
   }

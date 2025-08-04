@@ -11,6 +11,4 @@ const AUTHENTICATION_HELP = `Authentication:
   Get your session token from https://kagi.com/settings/user_details
   → Session Link → copy to clipboard → extract "token" parameter.`;
 
-module.exports = {
-  AUTHENTICATION_HELP,
-};
+export { AUTHENTICATION_HELP };

@@ -2,9 +2,9 @@
  * @fileoverview Authentication utilities for Kagi session token handling
  */
 
-const os = require("os");
-const fs = require("fs");
-const path = require("path");
+import os from "node:os";
+import fs from "node:fs";
+import path from "node:path";
 
 /**
  * Reads Kagi session token from ~/.kagi_session_token file
@@ -31,13 +31,13 @@ function readTokenFromFile() {
  */
 function resolveToken(tokenFlag) {
   const token = tokenFlag || readTokenFromFile();
-  
+
   if (!token) {
     throw new Error(
-      "Authentication required: provide --token flag or create ~/.kagi_session_token file"
+      "Authentication required: provide --token flag or create ~/.kagi_session_token file",
     );
   }
-  
+
   return token;
 }
 
@@ -47,11 +47,7 @@ function resolveToken(tokenFlag) {
  * @returns {boolean} True if token appears valid
  */
 function isValidTokenFormat(token) {
-  return typeof token === 'string' && token.trim().length > 0;
+  return typeof token === "string" && token.trim().length > 0;
 }
 
-module.exports = {
-  readTokenFromFile,
-  resolveToken,
-  isValidTokenFormat,
-};
+export { isValidTokenFormat, readTokenFromFile, resolveToken };

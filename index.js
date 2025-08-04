@@ -5,10 +5,15 @@
  * Command dispatcher supporting search and help commands.
  */
 
-const { Command } = require("commander");
-const { version } = require("./package.json");
-const { createSearchCommand } = require("./src/commands/search");
-const { AUTHENTICATION_HELP } = require("./src/utils/help-text");
+import { Command } from "commander";
+import { readFileSync } from "node:fs";
+import { createSearchCommand } from "./src/commands/search.js";
+import { AUTHENTICATION_HELP } from "./src/utils/help-text.js";
+
+const packageJson = JSON.parse(
+  readFileSync(new URL("./package.json", import.meta.url), "utf8"),
+);
+const { version } = packageJson;
 
 /**
  * Creates and configures the help command
@@ -79,8 +84,8 @@ ${AUTHENTICATION_HELP}
   program.parse();
 }
 
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   main();
 }
 
-module.exports = { main };
+export { main };

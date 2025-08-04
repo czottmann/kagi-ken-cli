@@ -3,7 +3,7 @@
  * Clean API for HTTP requests and HTML parsing - ready for npm package extraction
  */
 
-const cheerio = require("cheerio");
+import * as cheerio from "cheerio";
 
 /**
  * User agent string for Kagi requests
@@ -191,7 +191,4 @@ function extractRelatedSearches($) {
   return relatedSearches;
 }
 
-module.exports = {
-  performSearch,
-  parseSearchResults,
-};
+export { parseSearchResults, performSearch };

@@ -2,10 +2,10 @@
  * @fileoverview Search command implementation for kagi-search CLI
  */
 
-const { Command } = require("commander");
-const { performSearch } = require("../web-client");
-const { resolveToken } = require("../utils/auth");
-const { AUTHENTICATION_HELP } = require("../utils/help-text");
+import { Command } from "commander";
+import { performSearch } from "../web-client.js";
+import { resolveToken } from "../utils/auth.js";
+import { AUTHENTICATION_HELP } from "../utils/help-text.js";
 
 /**
  * Creates and configures the search command
@@ -42,6 +42,4 @@ ${AUTHENTICATION_HELP}
   return searchCommand;
 }
 
-module.exports = {
-  createSearchCommand,
-};
+export { createSearchCommand };
