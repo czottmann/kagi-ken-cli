@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-08-04
+
+### Changed
+- **BREAKING**: Changed CLI syntax from `kagi-search "query"` to `kagi-search search "query"` (command-based structure)
+- **BREAKING**: Migrated from CommonJS to ES Modules with `"type": "module"` in package.json
+
+### Added
+- Command-based CLI architecture
+- `search` subcommand with current search functionality
+- `help` command supporting both patterns: `kagi-search help search` and `kagi-search search --help`
+
+
 ## [1.1.0] - 2025-08-03
 
 ### Changed
