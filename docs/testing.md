@@ -1,6 +1,6 @@
 # Testing
 
-<!-- Generated: 2025-08-02T23:59:27+02:00 -->
+<!-- Generated: 2025-08-04T21:37:01+02:00 -->
 
 ## Overview
 
@@ -12,6 +12,7 @@ The project currently has no formal test suite implemented. Testing is performed
 
 **CLI Validation** - Manual execution of CLI commands with various inputs
 - Test basic help commands: `./index.js`, `./index.js help`, `./index.js --help`
+- Test search command: `./index.js search "query"`, `./index.js search --help`
 - Test authentication methods: `--token` flag vs `~/.kagi_session_token` file
 - Test search queries with valid session tokens
 - Test error conditions: missing token, invalid token, network failures
@@ -24,9 +25,10 @@ The project currently has no formal test suite implemented. Testing is performed
 ### Recommended Test Implementation
 
 **Unit Tests** - Test individual components in isolation
-- `src/search.js` - HTTP request and response parsing functions
-- Authentication token file reading logic (`readTokenFromFile()`)
-- HTML parsing with cheerio selectors
+- `src/web-client.js` - HTTP request and response parsing functions
+- `src/utils/auth.js` - Authentication token resolution and file reading logic (`readTokenFromFile()`, `resolveToken()`)
+- `src/commands/search.js` - Search command argument parsing and error handling
+- HTML parsing with cheerio selectors using ES modules
 - JSON output formatting
 
 **Integration Tests** - Test complete CLI workflows
@@ -79,21 +81,23 @@ npm run test:coverage      # Generate coverage report
 
 **Basic CLI Validation**
 ```bash
-./index.js                 # Should show usage
+./index.js                 # Should show command list
 ./index.js --help          # Should show help text
-./index.js "test query"    # Should show missing token error
+./index.js help            # Should show help text
+./index.js search --help   # Should show search command help
+./index.js search "test query"  # Should show missing token error
 ```
 
 **With Valid Token**
 ```bash
 echo "your_token_here" > ~/.kagi_session_token
-./index.js "javascript"    # Should return JSON search results
-./index.js "test" --token different_token  # Token flag overrides file
+./index.js search "javascript"    # Should return JSON search results
+./index.js search "test" --token different_token  # Token flag overrides file
 ```
 
 **Error Conditions**
 ```bash
-./index.js "query" --token invalid_token   # Should return authentication error
+./index.js search "query" --token invalid_token   # Should return authentication error
 # Network errors require disconnected state or invalid URLs
 ```
 
@@ -105,10 +109,12 @@ echo "your_token_here" > ~/.kagi_session_token
 ```
 tests/
 ├── unit/
-│   ├── search.test.js     # Test src/search.js functions
-│   └── cli.test.js        # Test CLI argument parsing
+│   ├── web-client.test.js    # Test src/web-client.js functions
+│   ├── auth.test.js          # Test src/utils/auth.js functions  
+│   ├── search-command.test.js # Test src/commands/search.js
+│   └── cli.test.js           # Test CLI command routing
 ├── integration/
-│   └── e2e.test.js        # End-to-end workflow tests
+│   └── e2e.test.js           # End-to-end workflow tests
 └── fixtures/
     ├── sample-response.html    # Mock Kagi HTML responses
     └── expected-output.json    # Expected JSON output formats
@@ -135,9 +141,10 @@ tests/
 
 ### Key Testing Considerations
 
-**Authentication Testing** - Mock Kagi session validation without real tokens, test file reading scenarios
-**HTML Parsing** - Use `search-result.html` as test fixture for consistent parsing validation
+**Authentication Testing** - Mock Kagi session validation without real tokens, test file reading scenarios with ES modules
+**HTML Parsing** - Use `search-result.html` as test fixture for consistent parsing validation with ES module imports
 **Error Handling** - Test all error conditions specified in `SPEC.md` (lines 57-68)
 **Output Format** - Validate JSON structure matches API schema from `SPEC.md` (lines 44-51)
-**CLI Integration** - Test Commander.js argument parsing and help text generation
-**File System Testing** - Test token file reading, missing files, permission errors, empty files
+**CLI Integration** - Test Commander.js command-based argument parsing and help text generation
+**File System Testing** - Test token file reading with `node:fs` imports, missing files, permission errors, empty files
+**ES Module Testing** - Test import/export functionality and `node:` prefix usage across modules

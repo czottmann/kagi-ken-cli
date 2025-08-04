@@ -1,4 +1,4 @@
-<!-- Generated: 2025-08-02T19:22:46+02:00 -->
+<!-- Generated: 2025-08-04T21:37:01+02:00 -->
 
 # Build System
 
@@ -40,7 +40,7 @@ Test command is defined in `package.json` (lines 16-18) but currently shows erro
 npm install -g .
 
 # After global install, use CLI command
-kagi-search "search query" --token TOKEN
+kagi-search search "search query" --token TOKEN
 ```
 
 CLI binary configuration in `package.json` (lines 6-8) maps `kagi-search` command to `./index.js`.

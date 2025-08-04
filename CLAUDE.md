@@ -17,21 +17,28 @@ The project is fully implemented and functional.
 
 ## Key Files
 
-- `package.json` - Project configuration with Commander.js and Cheerio dependencies
+- `package.json` - Project configuration with ES modules, Commander.js and Cheerio dependencies
 - `SPEC.md` - Complete project specification and requirements
 - `example-search-result-page.html` - Sample Kagi search page for parsing reference
-- `index.js` - Main CLI entry point with Commander.js setup and authentication
-- `src/search.js` - Core search functionality with HTTP requests and HTML parsing
+- `index.js` - Main CLI entry point with command dispatcher and Commander.js setup
+- `src/web-client.js` - Core search functionality with HTTP requests and HTML parsing
+- `src/commands/search.js` - Search command implementation
+- `src/utils/auth.js` - Authentication utilities and token resolution
+- `src/utils/help-text.js` - Shared help text constants
 
 ## Implementation Notes
 
 ### CLI Structure
-The tool is callable as `kagi-search` after npm installation, or `./index.js` during development. Uses Commander.js for argument parsing and help text generation.
+The tool uses a command-based structure with Commander.js. Callable as `kagi-search` after npm installation, or `./index.js` during development. Main commands:
+- `search <query>` - Perform a search with optional --token flag
+- `help [command]` - Display help for commands
+
+ES Modules architecture with `node:` prefix for built-in modules.
 
 ### Authentication Flow
-1. Check for `--token` flag first
-2. Fall back to `~/.kagi_session_token` file using `readTokenFromFile()` helper
-3. Token is passed as `kagi_session` cookie when querying Kagi
+1. Check for `--token` flag first in `src/commands/search.js`
+2. Fall back to `~/.kagi_session_token` file using `resolveToken()` from `src/utils/auth.js`
+3. Token is passed as `kagi_session` cookie when querying Kagi via `src/web-client.js`
 
 ### HTML Parsing Strategy
 Uses Cheerio with CSS selectors to extract search results from Kagi's HTML:
@@ -42,7 +49,8 @@ Uses Cheerio with CSS selectors to extract search results from Kagi's HTML:
 
 ### Development Commands
 - `npm install` - Install dependencies (Commander.js, Cheerio)
-- `./index.js "query" --token token` - Run CLI during development
+- `./index.js search "query" --token token` - Run CLI during development
+- `./index.js help` or `./index.js help search` - Show help
 - `npm link` - Link for global testing during development
 - `npm test` - Currently not implemented (shows error message)
 
@@ -52,12 +60,13 @@ Uses Cheerio with CSS selectors to extract search results from Kagi's HTML:
 # Show help
 kagi-search
 kagi-search help
-kagi-search --help
+kagi-search help search
+kagi-search search --help
 
 # Search with token flag
-kagi-search "search query" --token a1b2c3d4e5f6g7h8i9j0
+kagi-search search "search query" --token a1b2c3d4e5f6g7h8i9j0
 
 # Search with token file
 echo "a1b2c3d4e5f6g7h8i9j0" > ~/.kagi_session_token
-kagi-search "search query"
+kagi-search search "search query"
 ```

@@ -21,19 +21,20 @@ The [Kagi Search API](https://help.kagi.com/kagi/api/overview.html) requires a s
 ```bash
 # Show help
 kagi-search
+kagi-search help
 
 # Set your session token once
 echo "$kagi_session_token" > ~/.kagi_session_token
 
 # Search and get JSON results
-kagi-search "steve jobs"
+kagi-search search "steve jobs"
 ```
 
 ### Search with token flag
 
 ```bash
 # Pass token directly
-kagi-search "steve jobs" --token $kagi_session_token
+kagi-search search "steve jobs" --token $kagi_session_token
 ```
 
 
@@ -97,10 +98,12 @@ Since you're basically using the web search, **this tool inherits the setting in
 
 ## Technical Details
 
+- **Architecture**: ES Modules with command-based CLI structure using Commander.js
 - **HTML Parsing**: Uses Kagi's `/html/search` endpoint for server-side rendered results
 - **Authentication**: Session token via Cookie header (from --token flag or ~/.kagi_session_token file)
 - **Error Handling**: Network errors, invalid tokens, parsing failures
 - **User Agent**: Mimics Safari browser for compatibility
+- **Module System**: Native ES6 imports with `node:` prefix for built-in modules
 
 ## Author
 
@@ -115,10 +118,12 @@ This project is neither affiliated with nor endorsed by Kagi. I'm just a very ha
 
 ## Key Files
 
-- **Main Entry Point**: `index.js` (Commander.js CLI setup 16-56, authentication flow 38-45)
-- **Search Engine**: `src/search.js` (HTTP requests 22-49, HTML parsing 58-188)
-- **HTML Parsing**: CSS selectors for `.search-result` (67-72), grouped results (75-80)
-- **Configuration**: `package.json` (dependencies, CLI binary configuration)
+- **Main Entry Point**: `index.js` (Commander.js CLI setup, command dispatcher 54-85)
+- **Web Client**: `src/web-client.js` (HTTP requests, HTML parsing, search logic 21-50)
+- **Search Command**: `src/commands/search.js` (search command implementation 14-43)
+- **Authentication**: `src/utils/auth.js` (token resolution, file reading 13-42)
+- **Help Text**: `src/utils/help-text.js` (shared help constants and messages)
+- **Configuration**: `package.json` (ES modules, dependencies, CLI binary configuration)
 - **Documentation**: `CLAUDE.md` (AI assistant guidance), `SPEC.md` (project specification)
 
 ## Documentation

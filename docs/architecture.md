@@ -39,12 +39,14 @@ The architecture follows a clean separation of concerns with the CLI layer handl
 
 ## Data Flow
 
-**Input Processing** - CLI arguments flow from `index.js:40` action handler → token resolution at `index.js:66` (flag or file) → query validation at `index.js:41-44`
+**Command Routing** - CLI arguments flow from `index.js:84` command dispatcher → command registration at `index.js:81-82` → search command handling in `src/commands/search.js:31`
 
-**HTTP Request Flow** - Search query and token passed to `performSearch` in `src/search.js:22` → URL construction with encoded query at `src/search.js:25` → HTTP request with session cookie at `src/search.js:29` → response validation at `src/search.js:34-39`
+**Input Processing** - Search arguments processed in `src/commands/search.js:31` → token resolution through `resolveToken()` at line 33 → query and token passed to web client
 
-**HTML Parsing Flow** - Raw HTML from response flows to `parseSearchResults` at `src/search.js:42` → Cheerio DOM loading at `src/search.js:59` → multiple extraction passes for main results (lines 64-69), grouped results (lines 72-77), and related searches (lines 80-86)
+**HTTP Request Flow** - Search query and token passed to `performSearch` in `src/web-client.js:21` → URL construction with encoded query at `src/web-client.js:32` → HTTP request with session cookie at `src/web-client.js:36` → response validation at `src/web-client.js:41-46`
 
-**Result Extraction** - Individual result processing through `extractSearchResult` (lines 103-128) and `extractGroupedResult` (lines 137-162) → CSS selector queries for titles (`.__sri_title_link`), URLs (`href` attributes), and snippets (`.__sri-desc`) → structured JSON assembly with type indicators and metadata
+**HTML Parsing Flow** - Raw HTML from response flows to `parseSearchResults` at `src/web-client.js:49` → Cheerio DOM loading at `src/web-client.js:66` → multiple extraction passes for main results (lines 71-76), grouped results (lines 79-84), and related searches (lines 87-93)
 
-**Output Generation** - Parsed results aggregated into data array at `src/search.js:43` → JSON serialization in CLI at `index.js:63` → stdout output with error handling at `index.js:64-67`
+**Result Extraction** - Individual result processing through `extractSearchResult` (lines 110-135) and `extractGroupedResult` (lines 144-169) → CSS selector queries for titles (`.__sri_title_link`), URLs (`href` attributes), and snippets (`.__sri-desc`) → structured JSON assembly with type indicators and metadata
+
+**Output Generation** - Parsed results aggregated into data array at `src/web-client.js:50` → JSON serialization in search command at `src/commands/search.js:35` → stdout output with error handling at `src/commands/search.js:37-39`

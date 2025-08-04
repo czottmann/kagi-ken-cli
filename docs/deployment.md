@@ -1,4 +1,4 @@
-<!-- Generated: 2025-08-02T23:59:27+02:00 -->
+<!-- Generated: 2025-08-04T21:37:01+02:00 -->
 
 # Deployment
 
@@ -89,7 +89,7 @@ chmod +x index.js
 npm link
 
 # Test linked binary
-kagi-search "test query"
+kagi-search search "test query"
 
 # Unlink when done
 npm unlink -g kagi-web-search

@@ -1,4 +1,4 @@
-<!-- Generated: 2025-08-02T23:59:27+02:00 -->
+<!-- Generated: 2025-08-04T21:37:01+02:00 -->
 
 # Project Overview
 
@@ -8,9 +8,13 @@ The project bridges the gap between web scraping and API access by providing a c
 
 ## Key Files
 
-**Main Entry Point** - `index.js` (lines 1-77): CLI application using Commander.js framework with search command, token authentication, and JSON output formatting
+**Main Entry Point** - `index.js` (lines 1-92): CLI command dispatcher using Commander.js framework with command routing, help system, and ES module structure
 
-**Core Search Logic** - `src/search.js` (lines 1-190): HTTP request handling, HTML parsing with Cheerio, and result extraction functions
+**Search Command** - `src/commands/search.js` (lines 1-46): Search command implementation with argument parsing, authentication integration, and JSON output formatting
+
+**Core Web Client** - `src/web-client.js` (lines 1-195): HTTP request handling, HTML parsing with Cheerio, and result extraction functions using ES modules
+
+**Authentication Utils** - `src/utils/auth.js` (lines 1-54): Token resolution utilities with file reading and validation functions
 
 **Project Configuration** - `package.json` (lines 1-41): NPM package definition with dependencies (Commander.js, Cheerio), binary entry point, and metadata
 
@@ -22,13 +26,13 @@ The project bridges the gap between web scraping and API access by providing a c
 
 **CLI Framework** - Commander.js v14.0.0 for command-line interface and argument parsing (`package.json` line 26)
 
-**HTML Parsing** - Cheerio v1.1.2 for jQuery-like CSS selector-based parsing of Kagi search result pages (`src/search.js` line 6)
+**HTML Parsing** - Cheerio v1.1.2 for jQuery-like CSS selector-based parsing of Kagi search result pages using ES module imports (`src/web-client.js` line 6)
 
-**HTTP Requests** - Node.js built-in fetch API for HTTPS requests to Kagi.com with cookie-based session authentication (`src/search.js` lines 24-32)
+**HTTP Requests** - Node.js built-in fetch API for HTTPS requests to Kagi.com with cookie-based session authentication (`src/web-client.js` lines 31-39)
 
-**Authentication Method** - Kagi session tokens passed as `kagi_session` cookies, supporting both CLI flags and `~/.kagi_session_token` file (`index.js` lines 66-80)
+**Authentication Method** - Kagi session tokens passed as `kagi_session` cookies, supporting both CLI flags and `~/.kagi_session_token` file through dedicated auth utilities (`src/utils/auth.js` lines 32-42)
 
-**Output Format** - JSON structured to match Kagi Search API schema with search results (t: 0) and related searches (t: 1) (`src/search.js` lines 119-124)
+**Output Format** - JSON structured to match Kagi Search API schema with search results (t: 0) and related searches (t: 1) (`src/web-client.js` lines 126-131)
 
 ## Platform Support
 
@@ -38,6 +42,8 @@ The project bridges the gap between web scraping and API access by providing a c
 
 **Cross-Platform Compatibility** - Pure Node.js implementation with no platform-specific dependencies, executable on macOS, Linux, and Windows
 
-**User-Agent Specification** - Safari macOS user agent for Kagi compatibility (`src/search.js` lines 12-13)
+**User-Agent Specification** - Safari macOS user agent for Kagi compatibility (`src/web-client.js` lines 11-12)
+
+**ES Module Architecture** - Modern JavaScript with ES module imports using `node:` prefix for built-in modules and `"type": "module"` in package.json (line 5)
 
 **Authentication Requirements** - Valid Kagi.com account with session token obtained through web browser login, no API key or special access needed
