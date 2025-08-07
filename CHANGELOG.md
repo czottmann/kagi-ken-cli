@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2025-08-07
+
+### Fixed
+- **CLI Binary**: Fixed module entry condition that prevented kagi-search from running when installed via npm
+- **Help Display**: Added automatic help display when no command arguments are provided
+- Resolved symlink path differences between `import.meta.url` and `process.argv[1]` in npm installations
+
 ## [1.3.0] - 2025-08-07
 
 ### Added
