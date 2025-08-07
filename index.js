@@ -92,7 +92,8 @@ ${AUTHENTICATION_HELP}
   program.parse();
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Run main() when this file is executed directly (not imported)
+if (import.meta.url.startsWith('file://') && process.argv[1] && import.meta.url.includes('index.js')) {
   main();
 }
 
