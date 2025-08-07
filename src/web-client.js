@@ -274,7 +274,7 @@ async function performSummarize(input, token, options) {
     // Parse streaming response
     const streamData = await response.text();
     const parsedResponse = parseStreamingSummary(streamData);
-    
+
     // Extract output_data.markdown and return as data.output
     const output = parsedResponse?.output_data?.markdown || "";
     return { data: { output } };
@@ -295,17 +295,17 @@ async function performSummarize(input, token, options) {
 function parseStreamingSummary(streamData) {
   try {
     // Split by NUL bytes and get the last non-empty message
-    const messages = streamData.split('\x00').filter(msg => msg.trim());
-    
+    const messages = streamData.split("\x00").filter((msg) => msg.trim());
+
     if (messages.length === 0) {
       throw new Error("No summary data received");
     }
 
-    const lastMessage = messages[messages.length - 1];
-    
+    const lastMessage = messages[messages.length - 1].trim();
+
     // Remove "final:" prefix if present
-    const jsonString = lastMessage.replace(/^final:/, '').trim();
-    
+    const jsonString = lastMessage.replace(/^final:/, "").trim();
+
     if (!jsonString) {
       throw new Error("Empty summary received");
     }

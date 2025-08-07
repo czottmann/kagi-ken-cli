@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2025-08-07
+
+### Fixed
+- **Summarizer**: Fixed parsing issue where "final:" prefix wasn't properly removed from streaming response messages, causing JSON parsing failures for uncached URLs
+
 ## [1.4.0] - 2025-08-07
 
 Renamed both the repo `kagi-web-search` and the tool `kagi-search` to `kagi-ken`. I think it's about time since 1.3 introduced support for the Summarizer, exceeding the initial "search only" scope.
