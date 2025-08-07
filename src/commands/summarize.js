@@ -1,11 +1,18 @@
 /**
- * @fileoverview Summarize command implementation for kagi-search CLI
+ * @fileoverview Summarize command implementation for kagi-ken CLI
  */
 
 import { Command } from "commander";
 import { performSummarize } from "../web-client.js";
 import { resolveToken } from "../utils/auth.js";
 import { AUTHENTICATION_HELP } from "../utils/help-text.js";
+
+// Supported language codes from Kagi Summarizer API
+const SUPPORTED_LANGUAGES = [
+  "BG", "CS", "DA", "DE", "EL", "EN", "ES", "ET", "FI", "FR",
+  "HU", "ID", "IT", "JA", "KO", "LT", "LV", "NB", "NL", "PL",
+  "PT", "RO", "RU", "SK", "SL", "SV", "TR", "UK", "ZH", "ZH-HANT"
+];
 
 /**
  * Creates and configures the summarize command
@@ -18,16 +25,20 @@ function createSummarizeCommand() {
     .description("Summarize content from URL or text using Kagi's summarizer")
     .option("--url <url>", "URL to summarize")
     .option("--text <text>", "Text content to summarize")
-    .option("--language <language>", "Target language (2-character code, e.g., EN, DE)", "EN")
+    .option(
+      "--language <language>",
+      "Target language (2-character code, e.g., EN, DE)",
+      "EN",
+    )
     .option("--type <type>", "Summary type: 'summary' or 'takeaway'", "summary")
     .option("--token <token>", "Kagi session token for authentication")
     .addHelpText(
       "after",
       `
 Examples:
-  $ kagi-search summarize --url "https://example.com/article" --token a1b2c3d4e5f6g7h8i9j0
-  $ kagi-search summarize --text "Long text to summarize..." --type takeaway
-  $ kagi-search summarize --url "https://example.com" --language DE
+  $ kagi-ken summarize --url "https://example.com/article" --token a1b2c3d4e5f6g7h8i9j0
+  $ kagi-ken summarize --text "Long text to summarize..." --type takeaway
+  $ kagi-ken summarize --url "https://example.com" --language DE
 
 ${AUTHENTICATION_HELP}
       `,
@@ -43,7 +54,9 @@ ${AUTHENTICATION_HELP}
         }
 
         if (hasUrl && hasText) {
-          throw new Error("Cannot specify both --url and --text (mutually exclusive)");
+          throw new Error(
+            "Cannot specify both --url and --text (mutually exclusive)",
+          );
         }
 
         // Validate and normalize type
@@ -52,8 +65,13 @@ ${AUTHENTICATION_HELP}
           throw new Error("Type must be 'summary' or 'takeaway'");
         }
 
-        // Normalize language to uppercase
+        // Normalize language to uppercase and validate
         const language = options.language.toUpperCase();
+        if (!SUPPORTED_LANGUAGES.includes(language)) {
+          throw new Error(
+            `Unsupported language code '${language}'. Supported languages: ${SUPPORTED_LANGUAGES.join(", ")}`
+          );
+        }
 
         // Resolve authentication token
         const token = resolveToken(options.token);
