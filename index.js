@@ -84,6 +84,11 @@ ${AUTHENTICATION_HELP}
   program.addCommand(createSummarizeCommand());
   program.addCommand(createHelpCommand(program));
 
+  // Show help when no command is provided
+  if (process.argv.length <= 2) {
+    program.help();
+  }
+
   program.parse();
 }
 
