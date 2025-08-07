@@ -8,6 +8,7 @@
 import { Command } from "commander";
 import { readFileSync } from "node:fs";
 import { createSearchCommand } from "./src/commands/search.js";
+import { createSummarizeCommand } from "./src/commands/summarize.js";
 import { AUTHENTICATION_HELP } from "./src/utils/help-text.js";
 
 const packageJson = JSON.parse(
@@ -39,7 +40,7 @@ function createHelpCommand(program) {
         command.help();
       } else {
         console.error(`Unknown command: ${commandName}`);
-        console.error("Available commands: search, help");
+        console.error("Available commands: search, summarize, help");
         process.exit(1);
       }
     });
@@ -64,14 +65,15 @@ function main() {
       "after",
       `
 Commands:
-  search    Search Kagi.com and return JSON results
-  help      Display help for a command
+  search      Search Kagi.com and return JSON results
+  summarize   Summarize content from URL or text using Kagi's summarizer
+  help        Display help for a command
 
 Examples:
   $ kagi-search search "steve jobs" --token a1b2c3d4e5f6g7h8i9j0
-  $ kagi-search search "search query"
+  $ kagi-search summarize --url "https://example.com" --type summary
   $ kagi-search help search
-  $ kagi-search search --help
+  $ kagi-search summarize --help
 
 ${AUTHENTICATION_HELP}
       `,
@@ -79,6 +81,7 @@ ${AUTHENTICATION_HELP}
 
   // Add commands
   program.addCommand(createSearchCommand());
+  program.addCommand(createSummarizeCommand());
   program.addCommand(createHelpCommand(program));
 
   program.parse();
