@@ -1,22 +1,26 @@
 # kagi-web-search
 
-A Node.js CLI tool that searches Kagi.com using session tokens and returns structured JSON data matching Kagi's official search API schema.
+A Node.js CLI tool that provides access to Kagi.com services using session tokens:
 
-Unlike the official Kagi Search API which requires API access, this tool uses your existing Kagi session to perform searches and parse the HTML results into the same JSON format.
+- **Search**: Searches Kagi.com and returns structured JSON data matching Kagi's official search API schema
+- **Summarizer**: Uses Kagi's Summarizer to create summaries from URLs or text content
+
+Unlike the official Kagi Search API which requires API access, this tool uses your existing Kagi session to access both search and summarization features.
 
 
 ## Why?
 
-The [Kagi Search API](https://help.kagi.com/kagi/api/overview.html) requires a separate API key, which are invite-only at the moment. If you already have a Kagi subscription and want to programmatically search from scripts or tools, this CLI provides an alternative by:
+The [Kagi Search API](https://help.kagi.com/kagi/api/overview.html) requires a separate API key, which are invite-only at the moment. If you already have a Kagi subscription and want to programmatically access Kagi's services from scripts or tools, this CLI provides an alternative by:
 
 - Using your existing Kagi session token (no additional API costs)
-- Parsing Kagi's HTML search results into structured JSON
-- Matching the official API response format for compatibility
+- Parsing Kagi's HTML search results into structured JSON (matching official API format)
+- Accessing Kagi's Summarizer for URL and text summarization
+- Providing a unified CLI interface for both services
 
 
 ## Showcase
 
-### Basic search with token file
+### Basic usage with token file
 
 ```bash
 # Show help
@@ -28,24 +32,30 @@ echo "$kagi_session_token" > ~/.kagi_session_token
 
 # Search and get JSON results
 kagi-search search "steve jobs"
+
+# Summarize a URL (default: type=summary, language=EN)
+kagi-search summarize --url "https://en.wikipedia.org/wiki/Steve_Jobs"
+
+# Summarize text with custom options
+kagi-search summarize --text "Long article content..." --type takeaway --language DE
 ```
 
-### Search with token flag
+### Usage with token flag
 
 ```bash
-# Pass token directly
+# Pass token directly for any command
 kagi-search search "steve jobs" --token $kagi_session_token
+kagi-search summarize --url "https://example.com" --token $kagi_session_token
 ```
 
 
-### JSON output format
+### JSON output formats
 
+#### Search Results
 Results match the Kagi Search API schema:
 
 - **Search Results** (`t: 0`): Web search results with `url`, `title`, `snippet`
 - **Related Searches** (`t: 1`): Suggested search terms in `list` array
-
-The output is wrapped in a `data` object for consistency with API standards.
 
 ```json
 {
@@ -61,6 +71,17 @@ The output is wrapped in a `data` object for consistency with API standards.
       "list": ["steve jobs death", "steve jobs quotes", "steve jobs film"]
     }
   ]
+}
+```
+
+#### Summarizer Results
+Summaries return the markdown content directly:
+
+```json
+{
+  "data": {
+    "output": "# Summary\n\nSteve Jobs was an American entrepreneur and inventor who co-founded Apple Inc..."
+  }
 }
 ```
 
@@ -99,9 +120,10 @@ Since you're basically using the web search, **this tool inherits the setting in
 ## Technical Details
 
 - **Architecture**: ES Modules with command-based CLI structure using Commander.js
-- **HTML Parsing**: Uses Kagi's `/html/search` endpoint for server-side rendered results
+- **Search**: Uses Kagi's `/html/search` endpoint for server-side rendered results (HTML parsing)
+- **Summarizer**: Uses Kagi's `/mother/summary_labs` endpoint with streaming JSON responses
 - **Authentication**: Session token via Cookie header (from --token flag or ~/.kagi_session_token file)
-- **Error Handling**: Network errors, invalid tokens, parsing failures
+- **Error Handling**: Network errors, invalid tokens, parsing failures, stream processing
 - **User Agent**: Mimics Safari browser for compatibility
 - **Module System**: Native ES6 imports with `node:` prefix for built-in modules
 
@@ -118,10 +140,11 @@ This project is neither affiliated with nor endorsed by Kagi. I'm just a very ha
 
 ## Key Files
 
-- **Main Entry Point**: `index.js` (Commander.js CLI setup, command dispatcher 54-85)
-- **Web Client**: `src/web-client.js` (HTTP requests, HTML parsing, search logic 21-50)
-- **Search Command**: `src/commands/search.js` (search command implementation 14-43)
-- **Authentication**: `src/utils/auth.js` (token resolution, file reading 13-42)
+- **Main Entry Point**: `index.js` (Commander.js CLI setup, command dispatcher)
+- **Web Client**: `src/web-client.js` (HTTP requests, HTML parsing, streaming JSON processing)
+- **Search Command**: `src/commands/search.js` (search command implementation)
+- **Summarizer Command**: `src/commands/summarize.js` (summarizer command implementation)
+- **Authentication**: `src/utils/auth.js` (token resolution, file reading)
 - **Help Text**: `src/utils/help-text.js` (shared help constants and messages)
 - **Configuration**: `package.json` (ES modules, dependencies, CLI binary configuration)
 - **Documentation**: `CLAUDE.md` (AI assistant guidance), `SPEC.md` (project specification)

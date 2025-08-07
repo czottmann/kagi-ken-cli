@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Node.js CLI tool that searches Kagi.com using session tokens (not API keys). It parses Kagi's search result HTML pages and returns structured JSON data matching Kagi's official search API schema.
+This is a Node.js CLI tool that provides access to Kagi.com services using session tokens (not API keys):
+- **Search**: Parses Kagi's search result HTML pages and returns structured JSON data matching Kagi's official search API schema
+- **Summarizer**: Uses Kagi's Summarizer endpoint to summarize URLs or text content with streaming JSON response parsing
 
 The project is fully implemented and functional.
 
@@ -12,8 +14,9 @@ The project is fully implemented and functional.
 
 - **CLI Framework**: Uses Commander.js for command-line interface
 - **Authentication**: Kagi session token via `--token` flag or `~/.kagi_session_token` file
-- **Output**: JSON structured to match Kagi Search API response format
+- **Output**: JSON structured responses (search API format for search, markdown content for summaries)
 - **HTML Parsing**: Extracts search results from Kagi's HTML response pages
+- **Stream Processing**: Parses Kagi's streaming JSON responses for summarization
 
 ## Key Files
 
@@ -21,8 +24,9 @@ The project is fully implemented and functional.
 - `SPEC.md` - Complete project specification and requirements
 - `example-search-result-page.html` - Sample Kagi search page for parsing reference
 - `index.js` - Main CLI entry point with command dispatcher and Commander.js setup
-- `src/web-client.js` - Core search functionality with HTTP requests and HTML parsing
+- `src/web-client.js` - Core functionality with HTTP requests, HTML parsing, and streaming JSON parsing
 - `src/commands/search.js` - Search command implementation
+- `src/commands/summarize.js` - Summarizer command implementation
 - `src/utils/auth.js` - Authentication utilities and token resolution
 - `src/utils/help-text.js` - Shared help text constants
 
@@ -31,14 +35,22 @@ The project is fully implemented and functional.
 ### CLI Structure
 The tool uses a command-based structure with Commander.js. Callable as `kagi-search` after npm installation, or `./index.js` during development. Main commands:
 - `search <query>` - Perform a search with optional --token flag
+- `summarize` - Summarize URL or text content with --url/--text, --type, --language options
 - `help [command]` - Display help for commands
 
 ES Modules architecture with `node:` prefix for built-in modules.
 
 ### Authentication Flow
-1. Check for `--token` flag first in `src/commands/search.js`
+1. Check for `--token` flag first in command implementations
 2. Fall back to `~/.kagi_session_token` file using `resolveToken()` from `src/utils/auth.js`
 3. Token is passed as `kagi_session` cookie when querying Kagi via `src/web-client.js`
+
+### Summarizer Implementation
+Uses Kagi's `/mother/summary_labs` endpoint with streaming responses:
+- URL summarization: GET request with query parameters
+- Text summarization: POST request with form data
+- Processes NUL-separated stream messages, extracts final JSON, returns `output_data.markdown`
+- Supports language targeting and summary types (summary/takeaway)
 
 ### HTML Parsing Strategy
 Uses Cheerio with CSS selectors to extract search results from Kagi's HTML:
@@ -49,7 +61,8 @@ Uses Cheerio with CSS selectors to extract search results from Kagi's HTML:
 
 ### Development Commands
 - `npm install` - Install dependencies (Commander.js, Cheerio)
-- `./index.js search "query" --token token` - Run CLI during development
+- `./index.js search "query" --token token` - Run search during development
+- `./index.js summarize --url "https://example.com" --token token` - Run summarizer during development
 - `./index.js help` or `./index.js help search` - Show help
 - `npm link` - Link for global testing during development
 - `npm test` - Currently not implemented (shows error message)
@@ -61,12 +74,19 @@ Uses Cheerio with CSS selectors to extract search results from Kagi's HTML:
 kagi-search
 kagi-search help
 kagi-search help search
-kagi-search search --help
+kagi-search summarize --help
 
 # Search with token flag
 kagi-search search "search query" --token a1b2c3d4e5f6g7h8i9j0
 
-# Search with token file
+# Summarize URL with defaults (type=summary, language=EN)
+kagi-search summarize --url "https://example.com/article" --token a1b2c3d4e5f6g7h8i9j0
+
+# Summarize text with custom options
+kagi-search summarize --text "Long text content..." --type takeaway --language DE --token token
+
+# Using token file for both commands
 echo "a1b2c3d4e5f6g7h8i9j0" > ~/.kagi_session_token
 kagi-search search "search query"
+kagi-search summarize --url "https://example.com"
 ```

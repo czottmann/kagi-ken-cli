@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-08-07
+
+### Added
+- **Kagi Summarizer Support**: New `summarize` command for URL and text summarization
+- Support for both URL (`--url`) and text (`--text`) summarization modes
+- Configurable summary types: `summary` (default) and `takeaway` via `--type` flag
+- Multi-language support via `--language` flag (defaults to "EN")
+- Streaming JSON response processing for Kagi's `/mother/summary_labs` endpoint
+- Extracts and returns `output_data.markdown` content as `data.output`
+
+### Enhanced
+- Extended `src/web-client.js` with `performSummarize()` function for HTTP/streaming support
+- Updated CLI help system and command dispatcher to include summarizer functionality
+- Enhanced authentication to work with both search and summarization endpoints
+- Updated documentation (README.md, CLAUDE.md) with comprehensive summarizer examples
+
 ## [1.2.0] - 2025-08-04
 
 ### Changed
