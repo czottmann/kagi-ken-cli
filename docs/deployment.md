@@ -9,8 +9,8 @@ This is an npm package that provides a CLI binary for searching Kagi. The packag
 ### npm Package Distribution
 
 **Global Installation** - Main distribution method for end users
-- **Package Name**: `kagi-web-search` (package.json:2)
-- **CLI Binary**: `kagi-search` command (package.json:7)
+- **Package Name**: `kagi-ken` (package.json:2)
+- **CLI Binary**: `kagi-ken` command (package.json:7)
 - **Entry Point**: `./index.js` (package.json:7)
 - **Published Files**: Defined in `files` array (package.json:9-15)
 
@@ -35,9 +35,9 @@ LICENSE.md       - License file
 ### npm Registry Publishing
 
 **Repository Configuration** (package.json:33-40):
-- **Git Repository**: `https://github.com/czottmann/kagi-web-search.git`
-- **Issue Tracker**: `https://github.com/czottmann/kagi-web-search/issues`
-- **Homepage**: `https://github.com/czottmann/kagi-web-search#readme`
+- **Git Repository**: `https://github.com/czottmann/kagi-ken.git`
+- **Issue Tracker**: `https://github.com/czottmann/kagi-ken/issues`
+- **Homepage**: `https://github.com/czottmann/kagi-ken#readme`
 
 **Publishing Commands**:
 ```bash
@@ -52,24 +52,24 @@ npm publish --tag beta
 
 **End User Installation**:
 ```bash
-# Install globally to make kagi-search available system-wide
-npm install -g kagi-web-search
+# Install globally to make kagi-ken available system-wide
+npm install -g kagi-ken
 
 # Verify installation
-kagi-search --help
+kagi-ken --help
 ```
 
 **Binary Location**: Installed to npm's global bin directory, typically:
-- macOS/Linux: `/usr/local/bin/kagi-search`
-- Windows: `%APPDATA%\npm\kagi-search.cmd`
+- macOS/Linux: `/usr/local/bin/kagi-ken`
+- Windows: `%APPDATA%\npm\kagi-ken.cmd`
 
 ### Local Development Setup
 
 **Development Installation**:
 ```bash
 # Clone repository
-git clone https://github.com/czottmann/kagi-web-search.git
-cd kagi-web-search
+git clone https://github.com/czottmann/kagi-ken.git
+cd kagi-ken
 
 # Install dependencies
 npm install
@@ -89,10 +89,10 @@ chmod +x index.js
 npm link
 
 # Test linked binary
-kagi-search search "test query"
+kagi-ken search "test query"
 
 # Unlink when done
-npm unlink -g kagi-web-search
+npm unlink -g kagi-ken
 ```
 
 ## Reference
@@ -100,7 +100,7 @@ npm unlink -g kagi-web-search
 ### Package Configuration Files
 
 **package.json** - Main package configuration
-- **Binary mapping**: `"kagi-search": "./index.js"` (line 7)
+- **Binary mapping**: `"kagi-ken": "./index.js"` (line 7)
 - **Main entry**: `"main": "index.js"` (line 5)
 - **Version**: `"version": "1.0.0"` (line 3)
 - **License**: `"license": "MIT"` (line 24)
@@ -114,10 +114,10 @@ npm unlink -g kagi-web-search
 **Post-Installation Check**:
 ```bash
 # Verify binary is accessible
-which kagi-search
+which kagi-ken
 
 # Check version and help
-kagi-search --help
+kagi-ken --help
 ```
 
 ### Distribution Files

@@ -2,7 +2,7 @@
 
 # Files Catalog
 
-This catalog provides a comprehensive overview of all files in the kagi-web-search project, organized by function and purpose. The project implements a Node.js CLI tool that searches Kagi.com using session tokens and returns structured JSON results matching the Kagi Search API schema. Files are organized into logical categories to help developers and LLMs quickly locate specific functionality and understand the project structure.
+This catalog provides a comprehensive overview of all files in the kagi-ken project, organized by function and purpose. The project implements a Node.js CLI tool that searches Kagi.com using session tokens and returns structured JSON results matching the Kagi API schema. Files are organized into logical categories to help developers and LLMs quickly locate specific functionality and understand the project structure.
 
 The codebase follows a command-based modular architecture using ES modules with clear separation between CLI command dispatcher (`index.js`), command implementations (`src/commands/`), utility modules (`src/utils/`), and core web client functionality (`src/web-client.js`). Dependencies are managed through npm with Cheerio for HTML parsing and Commander.js for CLI functionality.
 
@@ -33,7 +33,7 @@ This project runs on Node.js and doesn't require platform-specific implementatio
 ## Build System
 
 **Package Configuration** - `package.json` (42 lines)  
-Main project configuration defining CLI binary (`kagi-search`), dependencies (Commander.js ^14.0.0, Cheerio ^1.1.2), and npm publishing settings. Specifies entry point and files for distribution.
+Main project configuration defining CLI binary (`kagi-ken`), dependencies (Commander.js ^14.0.0, Cheerio ^1.1.2), and npm publishing settings. Specifies entry point and files for distribution.
 
 **Lock Files** - Package manager dependency locks  
 - `pnpm-lock.yaml` - PNPM dependency resolution and version locking

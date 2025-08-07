@@ -4,7 +4,7 @@
 
 ## Overview
 
-The kagi-web-search project uses npm for package management and distribution. The build system is configured in `package.json` (lines 1-41) with a CLI binary entry point defined at `index.js`. The project leverages standard Node.js tooling for development and publishing to the npm registry.
+The kagi-ken project uses npm for package management and distribution. The build system is configured in `package.json` (lines 1-41) with a CLI binary entry point defined at `index.js`. The project leverages standard Node.js tooling for development and publishing to the npm registry.
 
 ## Build Workflows
 
@@ -40,10 +40,10 @@ Test command is defined in `package.json` (lines 16-18) but currently shows erro
 npm install -g .
 
 # After global install, use CLI command
-kagi-search search "search query" --token TOKEN
+kagi-ken search "search query" --token TOKEN
 ```
 
-CLI binary configuration in `package.json` (lines 6-8) maps `kagi-search` command to `./index.js`.
+CLI binary configuration in `package.json` (lines 6-8) maps `kagi-ken` command to `./index.js`.
 
 ## Platform Setup
 
@@ -88,7 +88,7 @@ Distribution files configured in `package.json` (lines 9-15):
 **Missing dependencies**: Run `npm install` or `pnpm install` to install from `package.json` (lines 25-28)
 
 **CLI command not found**: 
-- Check global installation: `npm list -g kagi-web-search`
+- Check global installation: `npm list -g kagi-ken`
 - Verify binary configuration in `package.json` (lines 6-8)
 - Try local execution: `./index.js`
 
@@ -98,4 +98,4 @@ Distribution files configured in `package.json` (lines 9-15):
 
 **Package publishing issues**:
 - Review files list in `package.json` (lines 9-15)
-- Verify package name availability: `kagi-web-search`
+- Verify package name availability: `kagi-ken`

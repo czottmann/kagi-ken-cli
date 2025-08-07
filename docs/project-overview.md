@@ -2,7 +2,7 @@
 
 # Project Overview
 
-kagi-web-search is a Node.js CLI tool that enables programmatic access to Kagi.com search results without requiring paid API access. The tool authenticates using Kagi session tokens (obtained by logging into Kagi.com) instead of invite-only API keys, making it accessible to all Kagi users. It parses HTML search result pages and returns structured JSON data that matches Kagi's official Search API schema, providing a seamless integration path for applications that need search functionality.
+kagi-ken is a Node.js CLI tool that enables programmatic access to Kagi.com search results without requiring paid API access. The tool authenticates using Kagi session tokens (obtained by logging into Kagi.com) instead of invite-only API keys, making it accessible to all Kagi users. It parses HTML search result pages and returns structured JSON data that matches Kagi's official Search API schema, providing a seamless integration path for applications that need search functionality.
 
 The project bridges the gap between web scraping and API access by providing a clean, command-line interface that outputs machine-readable JSON while handling authentication, error cases, and result parsing automatically. This approach allows developers to integrate Kagi search into their workflows, scripts, and applications without API costs or access limitations.
 
@@ -32,13 +32,13 @@ The project bridges the gap between web scraping and API access by providing a c
 
 **Authentication Method** - Kagi session tokens passed as `kagi_session` cookies, supporting both CLI flags and `~/.kagi_session_token` file through dedicated auth utilities (`src/utils/auth.js` lines 32-42)
 
-**Output Format** - JSON structured to match Kagi Search API schema with search results (t: 0) and related searches (t: 1) (`src/web-client.js` lines 126-131)
+**Output Format** - JSON structured to match Kagi API schema with search results (t: 0) and related searches (t: 1) (`src/web-client.js` lines 126-131)
 
 ## Platform Support
 
 **Node.js Requirements** - Node.js 18+ required for built-in fetch API support (`SPEC.md` line 11)
 
-**Installation Method** - Global NPM installation with `kagi-search` binary command (`package.json` lines 6-8)
+**Installation Method** - Global NPM installation with `kagi-ken` binary command (`package.json` lines 6-8)
 
 **Cross-Platform Compatibility** - Pure Node.js implementation with no platform-specific dependencies, executable on macOS, Linux, and Windows
 

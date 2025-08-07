@@ -20,7 +20,7 @@ The project currently has no formal test suite implemented. Testing is performed
 **HTML Parsing Validation** - Using sample data for parser development
 - Reference file: `search-result.html` - Sample Kagi search page for testing HTML parsing logic
 - Test CSS selector extraction against known HTML structure
-- Validate JSON output format matches Kagi Search API schema from `SPEC.md` (lines 37-53)
+- Validate JSON output format matches Kagi API schema from `SPEC.md` (lines 37-53)
 
 ### Recommended Test Implementation
 

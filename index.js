@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * @fileoverview CLI entry point for kagi-search.
+ * @fileoverview CLI entry point for kagi-ken.
  * Command dispatcher supporting search and help commands.
  */
 
@@ -56,9 +56,9 @@ function main() {
   const program = new Command();
 
   program
-    .name("kagi-search")
+    .name("kagi-ken")
     .description(
-      "Search Kagi.com using session tokens and return structured JSON results matching the Kagi Search API format",
+      "Search Kagi.com using session tokens and return structured JSON results matching the Kagi API format",
     )
     .version(version)
     .addHelpText(
@@ -70,10 +70,10 @@ Commands:
   help        Display help for a command
 
 Examples:
-  $ kagi-search search "steve jobs" --token a1b2c3d4e5f6g7h8i9j0
-  $ kagi-search summarize --url "https://example.com" --type summary
-  $ kagi-search help search
-  $ kagi-search summarize --help
+  $ kagi-ken search "steve jobs" --token a1b2c3d4e5f6g7h8i9j0
+  $ kagi-ken summarize --url "https://example.com" --type summary
+  $ kagi-ken help search
+  $ kagi-ken summarize --help
 
 ${AUTHENTICATION_HELP}
       `,
@@ -93,7 +93,10 @@ ${AUTHENTICATION_HELP}
 }
 
 // Run main() when this file is executed directly (not imported)
-if (import.meta.url.startsWith('file://') && process.argv[1] && import.meta.url.includes('index.js')) {
+if (
+  import.meta.url.startsWith("file://") && process.argv[1] &&
+  import.meta.url.includes("index.js")
+) {
   main();
 }
 

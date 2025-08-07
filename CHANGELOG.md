@@ -5,10 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-08-07
+
+Renamed both the repo `kagi-web-search` and the tool `kagi-search` to `kagi-ken`. I think it's about time since 1.3 introduced support for the Summarizer, exceeding the initial "search only" scope.
+
+
 ## [1.3.1] - 2025-08-07
 
 ### Fixed
-- **CLI Binary**: Fixed module entry condition that prevented kagi-search from running when installed via npm
+- **CLI Binary**: Fixed module entry condition that prevented kagi-ken from running when installed via npm
 - **Help Display**: Added automatic help display when no command arguments are provided
 - Resolved symlink path differences between `import.meta.url` and `process.argv[1]` in npm installations
 
@@ -29,13 +34,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.0] - 2025-08-04
 
 ### Changed
-- **BREAKING**: Changed CLI syntax from `kagi-search "query"` to `kagi-search search "query"` (command-based structure)
+- **BREAKING**: Changed CLI syntax from `kagi-ken "query"` to `kagi-ken search "query"` (command-based structure)
 - **BREAKING**: Migrated from CommonJS to ES Modules with `"type": "module"` in package.json
 
 ### Added
 - Command-based CLI architecture
 - `search` subcommand with current search functionality
-- `help` command supporting both patterns: `kagi-search help search` and `kagi-search search --help`
+- `help` command supporting both patterns: `kagi-ken help search` and `kagi-ken search --help`
 
 
 ## [1.1.0] - 2025-08-03
@@ -63,10 +68,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-08-02
 
 ### Added
-- Initial release of kagi-web-search CLI tool
+- Initial release of kagi-ken CLI tool
 - Command-line interface using Commander.js framework
 - HTML parsing of Kagi search results using Cheerio
-- JSON output matching Kagi Search API schema format
+- JSON output matching Kagi API schema format
 - Session token authentication via `--token` flag or environment variable
 - Support for main search results, grouped results, and related searches
 - Comprehensive error handling for network issues, authentication failures, and parsing errors

@@ -1,16 +1,17 @@
-# kagi-web-search
+# kagi-ken
 
 A Node.js CLI tool that provides access to Kagi.com services using session tokens:
 
 - **Search**: Searches Kagi.com and returns structured JSON data matching Kagi's official search API schema
 - **Summarizer**: Uses Kagi's Summarizer to create summaries from URLs or text content
 
-Unlike the official Kagi Search API which requires API access, this tool uses your existing Kagi session to access both search and summarization features.
+Unlike the official Kagi API which requires API access, this tool uses your existing Kagi session to access both search and summarization features.
 
+_"Kagi-ken"_ is a portmanteau of _"Kagi"_ (the service) and _"token"_.
 
 ## Why?
 
-The [Kagi Search API](https://help.kagi.com/kagi/api/overview.html) requires a separate API key, which are invite-only at the moment. If you already have a Kagi subscription and want to programmatically access Kagi's services from scripts or tools, this CLI provides an alternative by:
+The [Kagi API](https://help.kagi.com/kagi/api/overview.html) requires a separate API key, which are invite-only at the moment. If you already have a Kagi subscription and want to programmatically access Kagi's services from scripts or tools, this CLI provides an alternative by:
 
 - Using your existing Kagi session token (no additional API costs)
 - Parsing Kagi's HTML search results into structured JSON (matching official API format)
@@ -24,35 +25,35 @@ The [Kagi Search API](https://help.kagi.com/kagi/api/overview.html) requires a s
 
 ```bash
 # Show help
-kagi-search
-kagi-search help
+kagi-ken
+kagi-ken help
 
 # Set your session token once
 echo "$kagi_session_token" > ~/.kagi_session_token
 
 # Search and get JSON results
-kagi-search search "steve jobs"
+kagi-ken search "steve jobs"
 
 # Summarize a URL (default: type=summary, language=EN)
-kagi-search summarize --url "https://en.wikipedia.org/wiki/Steve_Jobs"
+kagi-ken summarize --url "https://en.wikipedia.org/wiki/Steve_Jobs"
 
 # Summarize text with custom options
-kagi-search summarize --text "Long article content..." --type takeaway --language DE
+kagi-ken summarize --text "Long article content..." --type takeaway --language DE
 ```
 
 ### Usage with token flag
 
 ```bash
 # Pass token directly for any command
-kagi-search search "steve jobs" --token $kagi_session_token
-kagi-search summarize --url "https://example.com" --token $kagi_session_token
+kagi-ken search "steve jobs" --token $kagi_session_token
+kagi-ken summarize --url "https://example.com" --token $kagi_session_token
 ```
 
 
 ### JSON output formats
 
 #### Search Results
-Results match the Kagi Search API schema:
+Results match the [Kagi Search API schema](https://help.kagi.com/kagi/api/search.html#objects) in a simplified form:
 
 - **Search Results** (`t: 0`): Web search results with `url`, `title`, `snippet`
 - **Related Searches** (`t: 1`): Suggested search terms in `list` array
@@ -75,7 +76,7 @@ Results match the Kagi Search API schema:
 ```
 
 #### Summarizer Results
-Summaries return the markdown content directly:
+Results match the [Kagi Summarizer API schema](https://help.kagi.com/kagi/api/summarizer.html#objects) in a simplified form:
 
 ```json
 {
@@ -102,7 +103,7 @@ Get your Kagi session token:
 ## Installation
 
 ```bash
-npm install -g git@github.com:czottmann/kagi-web-search.git
+npm install -g git@github.com:czottmann/kagi-ken.git
 ```
 
 ## Tips
