@@ -7,11 +7,38 @@ import { performSummarize } from "../web-client.js";
 import { resolveToken } from "../utils/auth.js";
 import { AUTHENTICATION_HELP } from "../utils/help-text.js";
 
-// Supported language codes from Kagi Summarizer API
+// Supported language codes from Kagi Universal Summarizer API
 const SUPPORTED_LANGUAGES = [
-  "BG", "CS", "DA", "DE", "EL", "EN", "ES", "ET", "FI", "FR",
-  "HU", "ID", "IT", "JA", "KO", "LT", "LV", "NB", "NL", "PL",
-  "PT", "RO", "RU", "SK", "SL", "SV", "TR", "UK", "ZH", "ZH-HANT"
+  "BG",
+  "CS",
+  "DA",
+  "DE",
+  "EL",
+  "EN",
+  "ES",
+  "ET",
+  "FI",
+  "FR",
+  "HU",
+  "ID",
+  "IT",
+  "JA",
+  "KO",
+  "LT",
+  "LV",
+  "NB",
+  "NL",
+  "PL",
+  "PT",
+  "RO",
+  "RU",
+  "SK",
+  "SL",
+  "SV",
+  "TR",
+  "UK",
+  "ZH",
+  "ZH-HANT",
 ];
 
 /**
@@ -68,8 +95,9 @@ ${AUTHENTICATION_HELP}
         // Normalize language to uppercase and validate
         const language = options.language.toUpperCase();
         if (!SUPPORTED_LANGUAGES.includes(language)) {
+          const sl = SUPPORTED_LANGUAGES.join(", ");
           throw new Error(
-            `Unsupported language code '${language}'. Supported languages: ${SUPPORTED_LANGUAGES.join(", ")}`
+            `Unsupported language code '${language}'. Supported languages: ${sl}`,
           );
         }
 
