@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2025-08-10
+
+### Changed
+- **BREAKING**: Renamed both the repo `kagi-ken` and the tool `kagi-ken` to `kagi-ken-cli`. Because …
+- **BREAKING**: Core functionality has been extracted into separate [`kagi-ken` package](https://github.com/czottmann/kagi-ken)
+- CLI now depends on external `kagi-ken` package instead of containing core functionality directly
+- Removed `src/web-client.js` - functionality moved to `kagi-ken` package
+- Updated CLI commands to import `search` and `summarize` functions from `kagi-ken` package
+- Updated dependencies: replaced `cheerio` with `kagi-ken` package dependency
+
+### Enhanced
+- **Architecture**: Clean separation between CLI interface and core functionality
+- **Modularity**: Core `kagi-ken` package can now be used by other projects programmatically
+- **Maintainability**: CLI focused solely on command-line interface concerns
+- **Documentation**: Updated all documentation files to reflect new package architecture
+
+### Technical
+- CLI maintains identical interface and functionality for end users
+- Package dependency uses GitHub repository: `github:czottmann/kagi-ken#1.0.0`
+- All existing authentication, error handling, and output formatting preserved
+
+
 ## [1.4.1] - 2025-08-07
 
 ### Fixed
