@@ -1,46 +1,43 @@
-<!-- Generated: 2025-08-04T21:37:01+02:00 -->
+<!-- Generated: 2025-08-10T16:30:29+02:00 -->
 
 # Files Catalog
 
-This catalog provides a comprehensive overview of all files in the kagi-ken-cli project, organized by function and purpose. The project implements a Node.js CLI tool that searches Kagi.com using session tokens and returns structured JSON results matching the Kagi API schema. Files are organized into logical categories to help developers and LLMs quickly locate specific functionality and understand the project structure.
+This catalog provides a comprehensive overview of all files in the kagi-ken-cli project, organized by function and purpose. The project implements a Node.js CLI wrapper around the core `kagi-ken` package, providing command-line access to Kagi.com search and summarization services. The CLI handles argument parsing, authentication, and output formatting while delegating all complex functionality to the separate kagi-ken package.
 
-The codebase follows a command-based modular architecture using ES modules with clear separation between CLI command dispatcher (`index.js`), command implementations (`src/commands/`), utility modules (`src/utils/`), and core web client functionality (`src/web-client.js`). Dependencies are managed through npm with Cheerio for HTML parsing and Commander.js for CLI functionality.
+The codebase follows a command-based modular architecture using ES modules with clear separation between CLI command dispatcher (`index.js`), command implementations (`src/commands/`), and utility modules (`src/utils/`). The core functionality (HTTP requests, HTML parsing, stream processing) is provided by the external kagi-ken package dependency.
 
 ## Core Source Files
 
-**Main Entry Point** - `index.js` (92 lines)  
-CLI command dispatcher with Commander.js setup supporting search and help commands. Implements command-based architecture with `createSearchCommand()` and `createHelpCommand()` functions (lines 54-85).
+**Main Entry Point** - `index.js` (103 lines)  
+CLI command dispatcher with Commander.js setup supporting search, summarize, and help commands. Implements command-based architecture with `createSearchCommand()`, `createSummarizeCommand()`, and `createHelpCommand()` functions (lines 58-85).
 
-**Search Command** - `src/commands/search.js` (46 lines)  
-Search command implementation with argument parsing and error handling. Creates the search command with required query argument and optional token flag (lines 14-42).
+**Search Command** - `src/commands/search.js` (45 lines)  
+Search command implementation importing `search` function from kagi-ken package. Handles argument parsing, authentication integration, and JSON output formatting (lines 14-42).
 
-**Web Client** - `src/web-client.js` (195 lines)  
-Core search functionality implementing HTTP requests to Kagi.com and HTML parsing. Contains `performSearch()` function (lines 21-57), HTML parsing with `parseSearchResults()` (lines 65-101), and result extraction functions for different HTML structures.
+**Summarize Command** - `src/commands/summarize.js` (94 lines)  
+Summarization command implementation importing `summarize` and `SUPPORTED_LANGUAGES` from kagi-ken package. Handles URL/text input validation, language targeting, and streaming response processing (lines 14-89).
 
 **Authentication Utilities** - `src/utils/auth.js` (54 lines)  
-Token authentication utilities with file reading and validation. Implements `resolveToken()` (lines 32-42) and `readTokenFromFile()` (lines 13-24) functions.
+Token authentication utilities shared across commands with file reading and validation. Implements `resolveToken()` (lines 32-42) and `readTokenFromFile()` (lines 13-24) functions.
 
 **Help Text Constants** - `src/utils/help-text.js` (15 lines)  
-Shared help text constants used across commands. Defines `AUTHENTICATION_HELP` constant (lines 8-12).
-
-**Legacy Search Module** - `src/search.js` (191 lines)  
-Legacy search functionality using CommonJS exports (not ES modules). Maintained for backward compatibility but superseded by `src/web-client.js`.
+Shared help text constants used across commands. Defines `AUTHENTICATION_HELP` constant (lines 8-12) for consistent authentication documentation.
 
 ## Platform Implementation
 
-This project runs on Node.js and doesn't require platform-specific implementations. The code uses standard Node.js APIs and cross-platform dependencies.
+This project runs on Node.js and doesn't require platform-specific implementations. The CLI wrapper uses standard Node.js APIs and relies on the kagi-ken package for all platform-specific functionality including HTTP requests and HTML parsing.
 
 ## Build System
 
-**Package Configuration** - `package.json` (42 lines)  
-Main project configuration defining CLI binary (`kagi-ken-cli`), dependencies (Commander.js ^14.0.0, Cheerio ^1.1.2), and npm publishing settings. Specifies entry point and files for distribution.
+**Package Configuration** - `package.json` (41 lines)  
+Main project configuration defining CLI binary (`kagi-ken-cli`), dependencies (Commander.js ^14.0.0, kagi-ken package from GitHub), and npm publishing settings. Specifies entry point and files for distribution.
 
 **Lock Files** - Package manager dependency locks  
 - `pnpm-lock.yaml` - PNPM dependency resolution and version locking
 - `package-lock.json` - NPM dependency resolution backup
 
 **Dependencies Directory** - `node_modules/`  
-Contains installed npm packages: `commander/` for CLI framework and `cheerio/` for HTML parsing.
+Contains installed npm packages: `commander/` for CLI framework and `kagi-ken/` package providing core Kagi integration functionality.
 
 ## Configuration
 
@@ -68,33 +65,33 @@ Main project documentation and usage instructions.
 ```
 /                          # Project root
 ├── index.js              # CLI command dispatcher (executable)
-├── src/                  # Source code modules
+├── src/                  # CLI source code modules
 │   ├── commands/         # Command implementations
-│   │   └── search.js     # Search command
-│   ├── utils/            # Utility modules
-│   │   ├── auth.js       # Authentication utilities
-│   │   └── help-text.js  # Shared help constants
-│   ├── web-client.js     # Core web client functionality
-│   └── search.js         # Legacy search module (CommonJS)
+│   │   ├── search.js     # Search command importing kagi-ken
+│   │   └── summarize.js  # Summarize command importing kagi-ken
+│   └── utils/            # Utility modules
+│       ├── auth.js       # Authentication utilities (shared)
+│       └── help-text.js  # Shared help constants
 ├── docs/                 # Documentation files
-├── package.json          # Project configuration
-└── node_modules/         # Dependencies
+├── package.json          # Project configuration with kagi-ken dependency
+└── node_modules/         # Dependencies (including kagi-ken package)
 ```
 
 ### Naming Conventions
 
 - **CLI Entry**: `index.js` with shebang for direct execution
-- **Commands**: Command implementations in `src/commands/` directory (`search.js`)
+- **Commands**: Command implementations in `src/commands/` directory (`search.js`, `summarize.js`)
 - **Utilities**: Helper modules in `src/utils/` directory (`auth.js`, `help-text.js`)
-- **Core Modules**: Main functionality files (`web-client.js`)
-- **Documentation**: Uppercase for project docs (`README.md`, `SPEC.md`)
+- **Core Package**: External dependency (`kagi-ken`) providing all business logic
+- **Documentation**: Uppercase for project docs (`README.md`, `CLAUDE.md`)
 - **Configuration**: Standard Node.js patterns (`.gitignore`, `package.json`)
 
 ### Dependency Relationships
 
-- `index.js` imports from `./package.json` (version), `./src/commands/search.js` (search command), and `./src/utils/help-text.js` (help constants)
-- `src/commands/search.js` depends on `../web-client.js` (search functionality) and `../utils/auth.js` (authentication)
-- `src/web-client.js` depends on `cheerio` for HTML parsing
-- `src/utils/auth.js` depends on Node.js built-in modules with `node:` prefix (`node:fs`, `node:os`)
+- `index.js` imports from `./package.json` (version), `./src/commands/search.js`, `./src/commands/summarize.js`, and `./src/utils/help-text.js` (help constants)
+- `src/commands/search.js` depends on `kagi-ken` package (`search` function) and `../utils/auth.js` (authentication)
+- `src/commands/summarize.js` depends on `kagi-ken` package (`summarize`, `SUPPORTED_LANGUAGES`) and `../utils/auth.js` (authentication)
+- `src/utils/auth.js` depends on Node.js built-in modules with `node:` prefix (`node:fs`, `node:os`, `node:path`)
 - All modules use ES modules (`import`/`export`) pattern with `"type": "module"` in package.json
 - CLI functionality provided by `commander` package for argument parsing and help generation
+- Core functionality provided by `kagi-ken` package dependency for HTTP requests, HTML parsing, and stream processing

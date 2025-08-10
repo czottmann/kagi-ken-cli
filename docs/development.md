@@ -1,12 +1,12 @@
-<!-- Generated: 2025-08-04T21:37:01+02:00 -->
+<!-- Generated: 2025-08-10T16:30:29+02:00 -->
 
 # Development Guide
 
 ## Overview
 
-This Node.js CLI project uses ES modules with a command-based architecture built on Commander.js for CLI handling and Cheerio for HTML parsing. The codebase follows modern JavaScript practices with ES module imports using the `node:` prefix, async/await patterns, clean error handling, and structured JSDoc documentation. The project is organized with a command dispatcher entry point (`index.js`), modular command implementations (`src/commands/`), utility modules (`src/utils/`), and core web client functionality (`src/web-client.js`).
+This Node.js CLI project serves as a lightweight wrapper around the core `kagi-ken` package, using ES modules with a command-based architecture built on Commander.js. The CLI handles command-line argument parsing, authentication token resolution, and output formatting, while delegating all complex functionality to the kagi-ken package. The codebase follows modern JavaScript practices with ES module imports using the `node:` prefix, async/await patterns, and structured JSDoc documentation.
 
-Development follows a minimal approach with no build step required - the code runs directly with Node.js 18+ using ES modules. The architecture prioritizes simplicity and maintainability through clear separation of concerns: command handling, authentication utilities, and web client functionality are isolated into distinct modules.
+Development follows a minimal approach with no build step required - the code runs directly with Node.js 18+ using ES modules. The architecture prioritizes simplicity and maintainability through clear separation between CLI interface concerns (command parsing, token handling) and business logic (HTTP requests, HTML parsing, stream processing) which is handled by the separate kagi-ken package.
 
 ## Code Style
 
@@ -15,14 +15,15 @@ Development follows a minimal approach with no build step required - the code ru
 All functions use JSDoc comments with proper type annotations:
 
 ```javascript
-// From src/web-client.js:15-20
+// From src/commands/search.js:14-42
 /**
- * Performs a search on Kagi.com and returns structured results
- *
- * @param {string} query - Search query
- * @param {string} token - Kagi session token
- * @returns {Promise<Object>} Object containing data array with search results and related searches
+ * Creates and configures the search command
+ * @returns {Command} Configured search command
  */
+function createSearchCommand() {
+  const searchCommand = new Command("search");
+  // Command configuration...
+}
 ```
 
 ### File Headers
@@ -30,10 +31,10 @@ All functions use JSDoc comments with proper type annotations:
 Each module includes a descriptive fileoverview comment:
 
 ```javascript
-// From index.js:4-6
+// From index.js:3-6
 /**
  * @fileoverview CLI entry point for kagi-ken-cli.
- * Command dispatcher supporting search and help commands.
+ * Command dispatcher supporting search and summarize commands.
  */
 ```
 
@@ -42,14 +43,15 @@ Each module includes a descriptive fileoverview comment:
 Functions are organized with main entry points first, followed by helper functions. Public functions are documented with JSDoc, private helpers include inline comments for complex logic:
 
 ```javascript
-// From src/web-client.js:104-109
+// From src/commands/summarize.js:14-38
 /**
- * Extracts a single search result from a search-result element
- *
- * @param {CheerioAPI} $ - Cheerio instance
- * @param {CheerioElement} element - Search result element
- * @returns {Object|null} Parsed search result or null if invalid
+ * Creates and configures the summarize command
+ * @returns {Command} Configured summarize command
  */
+function createSummarizeCommand() {
+  const summarizeCommand = new Command("summarize");
+  // Command configuration with URL/text options...
+}
 ```
 
 ### Error Handling Patterns
@@ -57,12 +59,14 @@ Functions are organized with main entry points first, followed by helper functio
 The codebase uses consistent error handling with descriptive messages and proper HTTP status code checking:
 
 ```javascript
-// From src/web-client.js:41-46
-if (!response.ok) {
-  if (response.status === 401 || response.status === 403) {
-    throw new Error("Invalid or expired session token");
-  }
-  throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+// From src/commands/search.js:36-39
+try {
+  const token = resolveToken(options.token);
+  const results = await search(query, token);
+  console.log(JSON.stringify(results, null, 2));
+} catch (error) {
+  console.error(JSON.stringify({ error: error.message }, null, 2));
+  process.exit(1);
 }
 ```
 
@@ -73,7 +77,7 @@ if (!response.ok) {
 The main CLI uses a command dispatcher pattern with separate command implementations:
 
 ```javascript
-// From index.js:54-82
+// From index.js:58-85
 const program = new Command();
 
 program
@@ -82,39 +86,46 @@ program
   .version(version)
   .addHelpText("after", `
 Commands:
-  search    Search Kagi.com and return JSON results
-  help      Display help for a command
+  search      Search Kagi.com and return JSON results
+  summarize   Summarize content from URL or text using Kagi's summarizer
+  help        Display help for a command
 `);
 
 // Add commands
 program.addCommand(createSearchCommand());
+program.addCommand(createSummarizeCommand());
 program.addCommand(createHelpCommand(program));
 ```
 
-Search command implementation is modularized:
+Command implementations are modularized and import from kagi-ken package:
 
 ```javascript
-// From src/commands/search.js:14-42
-function createSearchCommand() {
-  const searchCommand = new Command("search");
-  
-  searchCommand
-    .description("Search Kagi.com and return structured JSON results")
-    .argument("<query>", "Search query to execute")
-    .option("--token <token>", "Kagi session token for authentication")
-    .action(async (query, options) => {
-      try {
-        const token = resolveToken(options.token);
-        const results = await performSearch(query, token);
-        console.log(JSON.stringify(results, null, 2));
-      } catch (error) {
-        console.error(JSON.stringify({ error: error.message }, null, 2));
-        process.exit(1);
-      }
-    });
+// From src/commands/search.js:5-6, 31-40
+import { search } from "kagi-ken";
 
-  return searchCommand;
-}
+// In action handler:
+.action(async (query, options) => {
+  try {
+    const token = resolveToken(options.token);
+    const results = await search(query, token);  // Call kagi-ken package
+    console.log(JSON.stringify(results, null, 2));
+  } catch (error) {
+    console.error(JSON.stringify({ error: error.message }, null, 2));
+    process.exit(1);
+  }
+});
+```
+
+```javascript
+// From src/commands/summarize.js:5-6, 77-84
+import { summarize, SUPPORTED_LANGUAGES } from "kagi-ken";
+
+// In action handler:
+const results = await summarize(input, token, {
+  type,
+  language,
+  isUrl,
+});  // Call kagi-ken package
 ```
 
 ### Authentication Flow
@@ -154,50 +165,66 @@ function readTokenFromFile() {
 }
 ```
 
-### HTTP Request Pattern
+### Package Integration Pattern
 
-Fetch requests use consistent headers and error handling:
+CLI commands integrate with kagi-ken package functions:
 
 ```javascript
-// From src/web-client.js:31-39
-const response = await fetch(
-  `https://kagi.com/html/search?q=${encodeURIComponent(query)}`,
-  {
-    headers: {
-      "User-Agent": USER_AGENT,
-      "Cookie": `kagi_session=${token}`,
-    },
-  },
-);
+// From src/commands/search.js:34
+const results = await search(query, token);  // Direct call to kagi-ken package
+
+// From src/commands/summarize.js:78-82
+const results = await summarize(input, token, {
+  type,
+  language,
+  isUrl,
+});  // Call kagi-ken package with options object
 ```
 
-### HTML Parsing Strategy
+### Input Validation Pattern
 
-Cheerio parsing uses CSS selectors with defensive programming for element extraction:
+Summarize command implements comprehensive input validation:
 
 ```javascript
-// From src/web-client.js:71-76
-$(".search-result").each((_, element) => {
-  const result = extractSearchResult($, element);
-  if (result) {
-    results.push(result);
+// From src/commands/summarize.js:42-68
+// Validate mutually exclusive options
+const hasUrl = Boolean(options.url);
+const hasText = Boolean(options.text);
+
+if (!hasUrl && !hasText) {
+  throw new Error("Either --url or --text must be provided");
+}
+
+if (hasUrl && hasText) {
+  throw new Error("Cannot specify both --url and --text (mutually exclusive)");
+}
+
+// Validate language code
+const language = options.language.toUpperCase();
+if (!SUPPORTED_LANGUAGES.includes(language)) {
+  throw new Error(`Unsupported language code '${language}'`);
+}
+```
+
+### Shared Authentication Pattern
+
+Both commands use the same authentication resolution pattern:
+
+```javascript
+// From src/commands/search.js:33 and src/commands/summarize.js:71
+const token = resolveToken(options.token);
+
+// resolveToken() checks CLI flag first, then file, from src/utils/auth.js:32-42
+function resolveToken(tokenFlag) {
+  const token = tokenFlag || readTokenFromFile();
+  
+  if (!token) {
+    throw new Error(
+      "Authentication required: provide --token flag or create ~/.kagi_session_token file",
+    );
   }
-});
-```
-
-### Safe Element Extraction
-
-Element parsing includes null checks and fallbacks:
-
-```javascript
-// From src/web-client.js:115-124
-const titleLink = $element.find(".__sri_title_link").first();
-const title = titleLink.text().trim();
-const url = titleLink.attr("href");
-const snippet = $element.find(".__sri-desc").text().trim();
-
-if (!title || !url) {
-  return null;
+  
+  return token;
 }
 ```
 
@@ -205,85 +232,96 @@ if (!title || !url) {
 
 ### Development Setup
 
-1. **Install dependencies**: `npm install` (installs Commander.js and Cheerio from `package.json:24-27`)
-2. **Run during development**: `./index.js search "query" --token token` 
-3. **Test globally**: `npm link` then `kagi-ken-cli search "query" --token token`
+1. **Install dependencies**: `npm install` (installs Commander.js and kagi-ken package from `package.json:26-28`)
+2. **Run search during development**: `./index.js search "query" --token token` 
+3. **Run summarize during development**: `./index.js summarize --url "https://example.com" --token token`
+4. **Test globally**: `npm link` then `kagi-ken-cli search "query" --token token`
 
-### Adding New Search Result Types
+### Adding New Commands
 
-1. **Update parsing logic** in `src/web-client.js:parseSearchResults()` (line 65)
-2. **Add extraction function** following pattern in `extractSearchResult()` (line 110)
-3. **Test with sample HTML** using `example-search-result-page.html`
+1. **Create command file** in `src/commands/new-command.js` following existing patterns
+2. **Import kagi-ken functions** needed for the command functionality
+3. **Add command registration** in `index.js:83-85` with `createNewCommand()`
+4. **Update help text** in `index.js` to include the new command
 
-### Debugging HTML Parsing
+### Debugging CLI Integration
 
-1. **Save HTML responses** to files for inspection
-2. **Use Cheerio selectors** in Node REPL: `const $ = cheerio.load(html); $(".selector")`
-3. **Add console.log** statements in extraction functions for debugging
+1. **Add console.log** statements in command handlers before kagi-ken package calls
+2. **Test error handling** by passing invalid tokens or parameters
+3. **Use Node.js debugger** with `node --inspect ./index.js command args`
+4. **Check kagi-ken package** logs and errors for core functionality issues
 
 ### Error Testing
 
-Test error conditions by modifying token or network connectivity:
+Test error conditions by modifying tokens or command options:
 
-```javascript
-// Test invalid token
+```bash
+# Test invalid token
 kagi-ken-cli search "query" --token invalid
 
-// Test missing token (no file and no flag)
+# Test missing token (no file and no flag)
 rm ~/.kagi_session_token
 kagi-ken-cli search "query"
 
-// Test with token file
+# Test with token file
 echo "your_token_here" > ~/.kagi_session_token
 kagi-ken-cli search "query"
 
-// Test network error (modify URL in src/web-client.js:32)
+# Test summarize command errors
+kagi-ken-cli summarize  # No URL or text provided
+kagi-ken-cli summarize --url "example.com" --text "also text"  # Mutually exclusive
+kagi-ken-cli summarize --url "example.com" --language INVALID  # Bad language code
 ```
 
 ### Module Testing
 
-Individual functions can be tested by requiring the module:
+Individual CLI utilities can be tested by importing the module:
 
 ```javascript
-import { parseSearchResults } from './src/web-client.js';
-import { readFileSync } from 'node:fs';
-const html = readFileSync('example-search-result-page.html', 'utf8');
-const results = parseSearchResults(html);
+import { resolveToken } from './src/utils/auth.js';
+import { createSearchCommand } from './src/commands/search.js';
+import { createSummarizeCommand } from './src/commands/summarize.js';
+
+// Test authentication resolution
+const token = resolveToken('test-token');
+
+// Test command creation
+const searchCmd = createSearchCommand();
+const summarizeCmd = createSummarizeCommand();
 ```
 
 ## Reference
 
 ### File Organization
 
-- **`/index.js`** - CLI entry point with command dispatcher and help system (lines 54-85)
-- **`/src/commands/search.js`** - Search command implementation with argument parsing
-- **`/src/web-client.js`** - Core search functionality with HTTP requests and HTML parsing
-- **`/src/utils/auth.js`** - Authentication utilities for token resolution
-- **`/src/utils/help-text.js`** - Shared help text constants
-- **`/package.json`** - Project configuration with ES modules and dependencies (lines 24-27)
-- **`/SPEC.md`** - Complete project specification and requirements
-- **`/docs/`** - Documentation directory (defined in `package.json:29`)
+- **`/index.js`** - CLI entry point with command dispatcher and help system (lines 58-93)
+- **`/src/commands/search.js`** - Search command implementation importing from kagi-ken package
+- **`/src/commands/summarize.js`** - Summarize command implementation importing from kagi-ken package
+- **`/src/utils/auth.js`** - Authentication utilities for token resolution shared across commands
+- **`/src/utils/help-text.js`** - Shared help text constants used in commands
+- **`/package.json`** - Project configuration with ES modules and dependencies (lines 26-28)
+- **`/docs/`** - Documentation directory (defined in `package.json:30`)
 
 ### Naming Conventions
 
-- **Functions**: camelCase with descriptive verbs (`performSearch`, `extractSearchResult`)
-- **Constants**: UPPER_SNAKE_CASE (`USER_AGENT` in `src/web-client.js:11`, `AUTHENTICATION_HELP` in `src/utils/help-text.js:8`)
-- **Module exports**: ES module named exports (`src/web-client.js:194`, `src/utils/auth.js:53`)
+- **Functions**: camelCase with descriptive verbs (`createSearchCommand`, `resolveToken`)
+- **Constants**: UPPER_SNAKE_CASE (`AUTHENTICATION_HELP` in `src/utils/help-text.js:8`)
+- **Module exports**: ES module named exports (`src/commands/search.js:45`, `src/utils/auth.js:53`)
+- **Package imports**: Named imports from kagi-ken package (`search`, `summarize`, `SUPPORTED_LANGUAGES`)
 
 ### CSS Selectors Used
 
-Based on Kagi's HTML structure:
-- **`.search-result`** - Main search result containers
-- **`.__sri_title_link`** - Title links within results
-- **`.__sri-desc`** - Result description/snippet text
-- **`.sr-group .__srgi`** - Grouped sub-results
-- **`.related-searches a span`** - Related search terms
+HTML parsing is handled by the kagi-ken package. CLI-specific patterns:
+- **Command creation functions** - `createSearchCommand()`, `createSummarizeCommand()`
+- **Option validation** - Input validation before calling kagi-ken functions
+- **Error handling** - Consistent JSON error output across commands
+- **Authentication flow** - Token resolution from CLI flags or file
 
 ### Common Issues
 
-- **Token expiration**: Results in 401/403 errors (handled in `src/web-client.js:42-44`)
-- **HTML structure changes**: May break CSS selectors - check extraction functions
-- **Network timeouts**: Handled with generic error wrapping (lines 52-56)
-- **Missing elements**: All extraction functions return null for invalid/missing elements
-- **Query encoding**: URLs properly encoded with `encodeURIComponent()` (line 32)
-- **ES Module imports**: Use import/export syntax with `node:` prefix for built-in modules
+- **Token expiration**: Results in authentication errors from kagi-ken package, caught and formatted by CLI commands
+- **Missing options**: Summarize command validates required URL/text input and mutual exclusivity
+- **Invalid options**: Language codes and summary types validated against supported values from kagi-ken package
+- **Command routing**: All commands properly registered in main program dispatcher
+- **Package integration**: Ensure kagi-ken package is properly installed and imported
+- **ES Module imports**: Use import/export syntax with `node:` prefix for built-in modules, named imports for kagi-ken

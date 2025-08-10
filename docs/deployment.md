@@ -1,8 +1,8 @@
-<!-- Generated: 2025-08-04T21:37:01+02:00 -->
+<!-- Generated: 2025-08-10T16:30:29+02:00 -->
 
 # Deployment
 
-This is an npm package that provides a CLI binary for searching Kagi. The package can be installed globally via npm or run locally during development. Binary distribution is handled through npm's package registry with CLI entry point configuration in package.json.
+This is an npm package that provides a CLI binary wrapping the core kagi-ken package functionality for both search and summarization. The package can be installed globally via npm or run locally during development. The CLI serves as a lightweight wrapper that handles command-line interface concerns while delegating all core functionality to the separate kagi-ken package dependency.
 
 ## Package Types
 
@@ -11,21 +11,23 @@ This is an npm package that provides a CLI binary for searching Kagi. The packag
 **Global Installation** - Main distribution method for end users
 - **Package Name**: `kagi-ken-cli` (package.json:2)
 - **CLI Binary**: `kagi-ken-cli` command (package.json:7)
-- **Entry Point**: `./index.js` (package.json:7)
-- **Published Files**: Defined in `files` array (package.json:9-15)
+- **Entry Point**: `./index.js` (package.json:6)
+- **Published Files**: Defined in `files` array (package.json:10-15)
+- **Core Dependency**: `kagi-ken` package automatically installed from GitHub (package.json:28)
 
 **Local Development** - Direct execution during development
-- **Development Command**: `./index.js` or `node index.js`
+- **Search Command**: `./index.js search "query"` with optional `--token` flag
+- **Summarize Command**: `./index.js summarize --url "https://example.com"` with various options
 - **No Build Process**: Direct Node.js execution
-- **Dependencies**: Installed via npm/pnpm (package.json:25-28)
+- **Dependencies**: Installed via npm/pnpm including kagi-ken package (package.json:26-28)
 
 ### Package File Inclusion
 
-Files included in published package (package.json:9-15):
+Files included in published package (package.json:10-15):
 ```
-index.js         - Main CLI entry point
-src/             - Source code directory
-package.json     - Package configuration
+index.js         - Main CLI entry point and command dispatcher
+src/             - CLI command implementations and utility modules
+package.json     - Package configuration with kagi-ken dependency
 README.md        - Documentation
 LICENSE.md       - License file
 ```
@@ -34,7 +36,7 @@ LICENSE.md       - License file
 
 ### npm Registry Publishing
 
-**Repository Configuration** (package.json:33-40):
+**Repository Configuration** (package.json:33-39):
 - **Git Repository**: `https://github.com/czottmann/kagi-ken-cli.git`
 - **Issue Tracker**: `https://github.com/czottmann/kagi-ken-cli/issues`
 - **Homepage**: `https://github.com/czottmann/kagi-ken-cli#readme`
@@ -53,10 +55,13 @@ npm publish --tag beta
 **End User Installation**:
 ```bash
 # Install globally to make kagi-ken-cli available system-wide
+# This automatically installs the kagi-ken dependency
 npm install -g kagi-ken-cli
 
-# Verify installation
+# Verify installation with available commands
 kagi-ken-cli --help
+kagi-ken-cli search --help
+kagi-ken-cli summarize --help
 ```
 
 **Binary Location**: Installed to npm's global bin directory, typically:
@@ -71,7 +76,7 @@ kagi-ken-cli --help
 git clone https://github.com/czottmann/kagi-ken-cli.git
 cd kagi-ken-cli
 
-# Install dependencies
+# Install dependencies (includes kagi-ken package from GitHub)
 npm install
 # or
 pnpm install
@@ -79,8 +84,10 @@ pnpm install
 # Make CLI executable during development
 chmod +x index.js
 
-# Run CLI directly
-./index.js "search query" --token your-token
+# Run CLI commands directly
+./index.js search "search query" --token your-token
+./index.js summarize --url "https://example.com" --token your-token
+./index.js help
 ```
 
 **Local Package Testing**:
@@ -88,8 +95,10 @@ chmod +x index.js
 # Link for local testing
 npm link
 
-# Test linked binary
-kagi-ken-cli search "test query"
+# Test linked binary with both commands
+kagi-ken-cli search "test query" --token your-token
+kagi-ken-cli summarize --url "https://example.com" --token your-token
+kagi-ken-cli help
 
 # Unlink when done
 npm unlink -g kagi-ken-cli
@@ -100,14 +109,14 @@ npm unlink -g kagi-ken-cli
 ### Package Configuration Files
 
 **package.json** - Main package configuration
-- **Binary mapping**: `"kagi-ken-cli": "./index.js"` (line 7)
-- **Main entry**: `"main": "index.js"` (line 5)
-- **Version**: `"version": "1.0.0"` (line 3)
-- **License**: `"license": "MIT"` (line 24)
+- **Binary mapping**: `"kagi-ken-cli": "./index.js"` (line 8)
+- **Main entry**: `"main": "index.js"` (line 6)
+- **Version**: `"version": "1.5.0"` (line 3)
+- **License**: `"license": "MIT"` (line 25)
 
-**Dependencies** (package.json:25-28):
-- `commander`: CLI framework for argument parsing
-- `cheerio`: HTML parsing for search result extraction
+**Dependencies** (package.json:26-28):
+- `commander`: CLI framework for argument parsing and command routing
+- `kagi-ken`: Core package providing search and summarization functionality (GitHub dependency)
 
 ### Installation Verification
 
@@ -116,8 +125,11 @@ npm unlink -g kagi-ken-cli
 # Verify binary is accessible
 which kagi-ken-cli
 
-# Check version and help
+# Check version and available commands
+kagi-ken-cli --version
 kagi-ken-cli --help
+kagi-ken-cli search --help
+kagi-ken-cli summarize --help
 ```
 
 ### Distribution Files
@@ -128,13 +140,14 @@ kagi-ken-cli --help
 - Development files not in `files` array
 
 **Required Runtime**:
-- Node.js 18+ (for built-in fetch API used in SPEC.md:11)
+- Node.js 18+ (for built-in fetch API used by kagi-ken package)
 - npm or compatible package manager for installation
+- Network access for kagi-ken package installation from GitHub
 
 ### Authentication Deployment Note
 
 No API keys or sensitive configuration required for deployment. Authentication is handled per-user via:
-- `--token` flag at runtime
-- `~/.kagi_session_token` file (preferred method)
+- `--token` flag at runtime for both search and summarize commands
+- `~/.kagi_session_token` file (preferred method, shared across commands)
 
-Users obtain session tokens from their Kagi.com browser sessions as documented in SPEC.md.
+Users obtain session tokens from their Kagi.com browser sessions. The CLI wrapper handles token resolution and passes tokens to the kagi-ken package functions.

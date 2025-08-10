@@ -1,10 +1,10 @@
-# Testing
+<!-- Generated: 2025-08-10T16:30:29+02:00 -->
 
-<!-- Generated: 2025-08-04T21:37:01+02:00 -->
+# Testing
 
 ## Overview
 
-The project currently has no formal test suite implemented. Testing is performed manually through CLI validation and example runs. The npm test script in `package.json` (line 17) shows a placeholder error message indicating tests need to be implemented.
+The kagi-ken-cli project currently has no formal test suite implemented as it serves as a lightweight CLI wrapper around the core `kagi-ken` package. Core functionality testing is handled by the kagi-ken package, while CLI-specific testing focuses on command-line argument parsing, authentication integration, and output formatting. Testing is performed manually through CLI validation and example runs.
 
 ## Test Types
 
@@ -13,34 +13,38 @@ The project currently has no formal test suite implemented. Testing is performed
 **CLI Validation** - Manual execution of CLI commands with various inputs
 - Test basic help commands: `./index.js`, `./index.js help`, `./index.js --help`
 - Test search command: `./index.js search "query"`, `./index.js search --help`
-- Test authentication methods: `--token` flag vs `~/.kagi_session_token` file
-- Test search queries with valid session tokens
-- Test error conditions: missing token, invalid token, network failures
+- Test summarize command: `./index.js summarize --url "https://example.com"`, `./index.js summarize --help`
+- Test authentication methods: `--token` flag vs `~/.kagi_session_token` file for both commands
+- Test command execution with valid session tokens
+- Test error conditions: missing token, invalid token, mutually exclusive summarize options
 
-**HTML Parsing Validation** - Using sample data for parser development
-- Reference file: `search-result.html` - Sample Kagi search page for testing HTML parsing logic
-- Test CSS selector extraction against known HTML structure
-- Validate JSON output format matches Kagi API schema from `SPEC.md` (lines 37-53)
+**Core Package Integration** - Testing CLI interaction with kagi-ken package
+- Validate that search command properly calls `search()` function from kagi-ken package
+- Validate that summarize command properly calls `summarize()` function from kagi-ken package  
+- Test proper passing of authentication tokens to core package functions
+- Validate JSON output format matches expected schemas from core package
 
 ### Recommended Test Implementation
 
-**Unit Tests** - Test individual components in isolation
-- `src/web-client.js` - HTTP request and response parsing functions
+**Unit Tests** - Test individual CLI components in isolation
 - `src/utils/auth.js` - Authentication token resolution and file reading logic (`readTokenFromFile()`, `resolveToken()`)
-- `src/commands/search.js` - Search command argument parsing and error handling
-- HTML parsing with cheerio selectors using ES modules
-- JSON output formatting
+- `src/commands/search.js` - Search command argument parsing and kagi-ken package integration
+- `src/commands/summarize.js` - Summarize command option validation and kagi-ken package integration
+- Authentication utility sharing between commands
+- Error handling and process exit behavior
 
-**Integration Tests** - Test complete CLI workflows
-- End-to-end search execution with mock HTTP responses
-- Error handling for various failure scenarios
-- Output format validation against API schema
+**Integration Tests** - Test complete CLI workflows with kagi-ken package
+- End-to-end search execution testing CLI to kagi-ken package communication
+- End-to-end summarization testing with both URL and text inputs
+- Error handling for authentication failures and invalid options
+- Output format validation for both search and summarize commands
 
 **CLI Tests** - Test command-line interface behavior
-- Argument parsing with Commander.js
-- Token file reading and fallback behavior
-- Help text display
+- Argument parsing with Commander.js for search and summarize commands
+- Token file reading and fallback behavior shared across commands
+- Help text display for main program and individual commands
 - Exit codes for success/error conditions
+- Command routing and dispatch functionality
 
 ## Running Tests
 
@@ -93,12 +97,16 @@ npm run test:coverage      # Generate coverage report
 echo "your_token_here" > ~/.kagi_session_token
 ./index.js search "javascript"    # Should return JSON search results
 ./index.js search "test" --token different_token  # Token flag overrides file
+./index.js summarize --url "https://example.com"  # Should return summarized content
+./index.js summarize --text "Long text content" --type takeaway  # Should return takeaway summary
 ```
 
 **Error Conditions**
 ```bash
 ./index.js search "query" --token invalid_token   # Should return authentication error
-# Network errors require disconnected state or invalid URLs
+./index.js summarize --url "https://example.com" --text "also text"  # Should error on mutually exclusive options
+./index.js summarize  # Should error when neither URL nor text provided
+./index.js summarize --url "https://example.com" --language INVALID  # Should error on unsupported language
 ```
 
 ## Reference
@@ -109,15 +117,15 @@ echo "your_token_here" > ~/.kagi_session_token
 ```
 tests/
 ├── unit/
-│   ├── web-client.test.js    # Test src/web-client.js functions
 │   ├── auth.test.js          # Test src/utils/auth.js functions  
 │   ├── search-command.test.js # Test src/commands/search.js
-│   └── cli.test.js           # Test CLI command routing
+│   ├── summarize-command.test.js # Test src/commands/summarize.js
+│   └── cli.test.js           # Test CLI command routing and help
 ├── integration/
-│   └── e2e.test.js           # End-to-end workflow tests
+│   ├── search-e2e.test.js    # End-to-end search workflow tests
+│   └── summarize-e2e.test.js # End-to-end summarize workflow tests
 └── fixtures/
-    ├── sample-response.html    # Mock Kagi HTML responses
-    └── expected-output.json    # Expected JSON output formats
+    └── expected-output.json  # Expected JSON output formats for both commands
 ```
 
 ### Build System Test Targets
@@ -136,15 +144,16 @@ tests/
 
 **Test Dependencies** - Add to devDependencies
 - `jest` or `mocha` + `chai` - Test framework
-- `nock` - HTTP request mocking for integration tests
+- `sinon` - Mocking for kagi-ken package function calls
 - `@commander-js/extra-typings` - For CLI testing support
 
 ### Key Testing Considerations
 
-**Authentication Testing** - Mock Kagi session validation without real tokens, test file reading scenarios with ES modules
-**HTML Parsing** - Use `search-result.html` as test fixture for consistent parsing validation with ES module imports
-**Error Handling** - Test all error conditions specified in `SPEC.md` (lines 57-68)
-**Output Format** - Validate JSON structure matches API schema from `SPEC.md` (lines 44-51)
-**CLI Integration** - Test Commander.js command-based argument parsing and help text generation
+**Authentication Testing** - Mock token resolution without real tokens, test file reading scenarios with ES modules, test token sharing between commands
+**Package Integration Testing** - Mock kagi-ken package functions (search, summarize) to test CLI integration without actual HTTP requests
+**Error Handling** - Test CLI-specific error conditions, invalid command options, missing required parameters, authentication failures
+**Output Format** - Validate JSON structure matches expected formats from both kagi-ken package functions
+**CLI Integration** - Test Commander.js command-based argument parsing, help text generation, command routing
 **File System Testing** - Test token file reading with `node:fs` imports, missing files, permission errors, empty files
-**ES Module Testing** - Test import/export functionality and `node:` prefix usage across modules
+**Command Validation** - Test summarize command input validation (URL/text mutual exclusivity, language codes, summary types)
+**ES Module Testing** - Test import/export functionality and kagi-ken package import integration

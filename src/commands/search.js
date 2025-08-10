@@ -3,7 +3,7 @@
  */
 
 import { Command } from "commander";
-import { performSearch } from "../web-client.js";
+import { search } from "kagi-ken";
 import { resolveToken } from "../utils/auth.js";
 import { AUTHENTICATION_HELP } from "../utils/help-text.js";
 
@@ -31,7 +31,7 @@ ${AUTHENTICATION_HELP}
     .action(async (query, options) => {
       try {
         const token = resolveToken(options.token);
-        const results = await performSearch(query, token);
+        const results = await search(query, token);
         console.log(JSON.stringify(results, null, 2));
       } catch (error) {
         console.error(JSON.stringify({ error: error.message }, null, 2));

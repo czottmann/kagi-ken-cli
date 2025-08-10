@@ -3,43 +3,9 @@
  */
 
 import { Command } from "commander";
-import { performSummarize } from "../web-client.js";
+import { summarize, SUPPORTED_LANGUAGES } from "kagi-ken";
 import { resolveToken } from "../utils/auth.js";
 import { AUTHENTICATION_HELP } from "../utils/help-text.js";
-
-// Supported language codes from Kagi Universal Summarizer API
-const SUPPORTED_LANGUAGES = [
-  "BG",
-  "CS",
-  "DA",
-  "DE",
-  "EL",
-  "EN",
-  "ES",
-  "ET",
-  "FI",
-  "FR",
-  "HU",
-  "ID",
-  "IT",
-  "JA",
-  "KO",
-  "LT",
-  "LV",
-  "NB",
-  "NL",
-  "PL",
-  "PT",
-  "RO",
-  "RU",
-  "SK",
-  "SL",
-  "SV",
-  "TR",
-  "UK",
-  "ZH",
-  "ZH-HANT",
-];
 
 /**
  * Creates and configures the summarize command
@@ -109,7 +75,7 @@ ${AUTHENTICATION_HELP}
         const isUrl = hasUrl;
 
         // Perform summarization
-        const results = await performSummarize(input, token, {
+        const results = await summarize(input, token, {
           type,
           language,
           isUrl,

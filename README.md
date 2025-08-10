@@ -1,11 +1,11 @@
 # kagi-ken-cli
 
-A Node.js CLI tool that provides access to Kagi.com services using session tokens:
+A lightweight Node.js CLI wrapper around the core `kagi-ken` package, providing command-line access to Kagi.com services using session tokens:
 
 - **Search**: Searches Kagi.com and returns structured JSON data matching Kagi's official search API schema
 - **Summarizer**: Uses Kagi's Summarizer to create summaries from URLs or text content
 
-Unlike the official Kagi API which requires API access, this tool uses your existing Kagi session to access both search and summarization features.
+Unlike the official Kagi API which requires API access, this CLI uses your existing Kagi session to access both search and summarization features. The CLI handles command-line parsing and authentication while the core `kagi-ken` package provides all the Kagi integration functionality.
 
 _"Kagi-ken"_ is a portmanteau of _"Kagi"_ (the service) and _"token"_.
 
@@ -103,7 +103,7 @@ Get your Kagi session token:
 ## Installation
 
 ```bash
-npm install -g git@github.com:czottmann/kagi-ken.git
+npm install -g git@github.com:czottmann/kagi-ken-cli.git
 ```
 
 ## Tips
@@ -120,13 +120,13 @@ Since you're basically using the web search, **this tool inherits the setting in
 
 ## Technical Details
 
-- **Architecture**: ES Modules with command-based CLI structure using Commander.js
-- **Search**: Uses Kagi's `/html/search` endpoint for server-side rendered results (HTML parsing)
-- **Summarizer**: Uses Kagi's `/mother/summary_labs` endpoint with streaming JSON responses
-- **Authentication**: Session token via Cookie header (from --token flag or ~/.kagi_session_token file)
-- **Error Handling**: Network errors, invalid tokens, parsing failures, stream processing
-- **User Agent**: Mimics Safari browser for compatibility
-- **Module System**: Native ES6 imports with `node:` prefix for built-in modules
+- **Architecture**: ES Modules with command-based CLI structure using Commander.js wrapper around core kagi-ken package
+- **Core Package**: `kagi-ken` package handles HTTP requests, HTML parsing, stream processing, and result formatting
+- **Search**: Core package uses Kagi's `/html/search` endpoint for server-side rendered results (HTML parsing)
+- **Summarizer**: Core package uses Kagi's `/mother/summary_labs` endpoint with streaming JSON responses
+- **Authentication**: Session token resolution handled by CLI, passed to core package functions
+- **Error Handling**: CLI handles command-line errors, core package handles network and parsing errors
+- **Module System**: Native ES6 imports with `node:` prefix for built-in modules and named imports from kagi-ken
 
 ## Author
 
@@ -142,13 +142,13 @@ This project is neither affiliated with nor endorsed by Kagi. I'm just a very ha
 ## Key Files
 
 - **Main Entry Point**: `index.js` (Commander.js CLI setup, command dispatcher)
-- **Web Client**: `src/web-client.js` (HTTP requests, HTML parsing, streaming JSON processing)
-- **Search Command**: `src/commands/search.js` (search command implementation)
-- **Summarizer Command**: `src/commands/summarize.js` (summarizer command implementation)
-- **Authentication**: `src/utils/auth.js` (token resolution, file reading)
+- **Core Package**: `kagi-ken` dependency (HTTP requests, HTML parsing, streaming JSON processing)
+- **Search Command**: `src/commands/search.js` (search command importing from kagi-ken)
+- **Summarizer Command**: `src/commands/summarize.js` (summarizer command importing from kagi-ken)
+- **Authentication**: `src/utils/auth.js` (token resolution, file reading shared across commands)
 - **Help Text**: `src/utils/help-text.js` (shared help constants and messages)
-- **Configuration**: `package.json` (ES modules, dependencies, CLI binary configuration)
-- **Documentation**: `CLAUDE.md` (AI assistant guidance), `SPEC.md` (project specification)
+- **Configuration**: `package.json` (ES modules, kagi-ken dependency, CLI binary configuration)
+- **Documentation**: `CLAUDE.md` (AI assistant guidance with updated architecture notes)
 
 ## Documentation
 

@@ -1,22 +1,24 @@
-<!-- Generated: 2025-08-04T21:37:01+02:00 -->
+<!-- Generated: 2025-08-10T16:30:29+02:00 -->
 
 # Project Overview
 
-kagi-ken-cli is a Node.js CLI tool that enables programmatic access to Kagi.com search results without requiring paid API access. The tool authenticates using Kagi session tokens (obtained by logging into Kagi.com) instead of invite-only API keys, making it accessible to all Kagi users. It parses HTML search result pages and returns structured JSON data that matches Kagi's official Search API schema, providing a seamless integration path for applications that need search functionality.
+kagi-ken-cli is a Node.js CLI wrapper that provides command-line access to Kagi.com services including search and summarization. The CLI tool is built as a lightweight wrapper around the core `kagi-ken` package, which handles all the complex functionality including HTML parsing, HTTP requests, and result formatting. This separation allows for clean modularity where the CLI focuses on command-line interface concerns while the core package provides the underlying Kagi integration functionality.
 
-The project bridges the gap between web scraping and API access by providing a clean, command-line interface that outputs machine-readable JSON while handling authentication, error cases, and result parsing automatically. This approach allows developers to integrate Kagi search into their workflows, scripts, and applications without API costs or access limitations.
+The project authenticates using Kagi session tokens (obtained by logging into Kagi.com) instead of API keys, making it accessible to all Kagi users. It returns structured JSON data matching Kagi's official API schemas for both search results and summarization output, providing seamless integration for applications and scripts.
 
 ## Key Files
 
-**Main Entry Point** - `index.js` (lines 1-92): CLI command dispatcher using Commander.js framework with command routing, help system, and ES module structure
+**Main Entry Point** - `index.js` (lines 1-103): CLI command dispatcher using Commander.js framework with command routing, help system, and ES module structure
 
-**Search Command** - `src/commands/search.js` (lines 1-46): Search command implementation with argument parsing, authentication integration, and JSON output formatting
+**Search Command** - `src/commands/search.js` (lines 1-45): Search command implementation importing from `kagi-ken` package with argument parsing, authentication integration, and JSON output formatting
 
-**Core Web Client** - `src/web-client.js` (lines 1-195): HTTP request handling, HTML parsing with Cheerio, and result extraction functions using ES modules
+**Summarize Command** - `src/commands/summarize.js` (lines 1-94): Summarization command implementation importing from `kagi-ken` package with URL/text input options, language targeting, and streaming response handling
 
-**Authentication Utils** - `src/utils/auth.js` (lines 1-54): Token resolution utilities with file reading and validation functions
+**Authentication Utils** - `src/utils/auth.js` (lines 1-54): Token resolution utilities with file reading and validation functions for both commands
 
-**Project Configuration** - `package.json` (lines 1-41): NPM package definition with dependencies (Commander.js, Cheerio), binary entry point, and metadata
+**Core Package Dependency** - `kagi-ken` package (GitHub dependency): Provides all HTTP request handling, HTML parsing, stream processing, and result extraction functionality
+
+**Project Configuration** - `package.json` (lines 1-41): NPM package definition with dependencies (Commander.js, kagi-ken package), binary entry point, and metadata
 
 **Project Specification** - `SPEC.md` (lines 1-111): Complete implementation requirements, API format specifications, and usage examples
 
@@ -24,25 +26,25 @@ The project bridges the gap between web scraping and API access by providing a c
 
 ## Technology Stack
 
-**CLI Framework** - Commander.js v14.0.0 for command-line interface and argument parsing (`package.json` line 26)
+**CLI Framework** - Commander.js v14.0.0 for command-line interface and argument parsing (`package.json` line 27)
 
-**HTML Parsing** - Cheerio v1.1.2 for jQuery-like CSS selector-based parsing of Kagi search result pages using ES module imports (`src/web-client.js` line 6)
+**Core Functionality Package** - `kagi-ken` v1.0.0 (GitHub dependency) provides HTML parsing with Cheerio, HTTP requests with Node.js fetch API, and result extraction (`package.json` line 28)
 
-**HTTP Requests** - Node.js built-in fetch API for HTTPS requests to Kagi.com with cookie-based session authentication (`src/web-client.js` lines 31-39)
+**Authentication Method** - Kagi session tokens passed as cookies, supporting both CLI flags and `~/.kagi_session_token` file through dedicated auth utilities (`src/utils/auth.js` lines 32-42)
 
-**Authentication Method** - Kagi session tokens passed as `kagi_session` cookies, supporting both CLI flags and `~/.kagi_session_token` file through dedicated auth utilities (`src/utils/auth.js` lines 32-42)
+**Output Format** - JSON structured to match Kagi API schemas for search results (t: 0/1) and summarization output (markdown format) handled by the kagi-ken package
 
-**Output Format** - JSON structured to match Kagi API schema with search results (t: 0) and related searches (t: 1) (`src/web-client.js` lines 126-131)
+**Stream Processing** - Real-time parsing of Kagi's streaming responses for summarization features provided by the core kagi-ken package
 
 ## Platform Support
 
-**Node.js Requirements** - Node.js 18+ required for built-in fetch API support (`SPEC.md` line 11)
+**Node.js Requirements** - Node.js 18+ required for built-in fetch API support used by the kagi-ken core package
 
-**Installation Method** - Global NPM installation with `kagi-ken-cli` binary command (`package.json` lines 6-8)
+**Installation Method** - Global NPM installation with `kagi-ken-cli` binary command (`package.json` lines 7-8)
 
 **Cross-Platform Compatibility** - Pure Node.js implementation with no platform-specific dependencies, executable on macOS, Linux, and Windows
 
-**User-Agent Specification** - Safari macOS user agent for Kagi compatibility (`src/web-client.js` lines 11-12)
+**Package Dependencies** - Core functionality provided by separate `kagi-ken` package, allowing modular architecture and reusability
 
 **ES Module Architecture** - Modern JavaScript with ES module imports using `node:` prefix for built-in modules and `"type": "module"` in package.json (line 5)
 
