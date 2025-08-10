@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * @fileoverview CLI entry point for kagi-ken.
+ * @fileoverview CLI entry point for kagi-ken-cli.
  * Command dispatcher supporting search and help commands.
  */
 
@@ -56,7 +56,7 @@ function main() {
   const program = new Command();
 
   program
-    .name("kagi-ken")
+    .name("kagi-ken-cli")
     .description(
       "Search Kagi.com using session tokens and return structured JSON results matching the Kagi API format",
     )
@@ -70,10 +70,10 @@ Commands:
   help        Display help for a command
 
 Examples:
-  $ kagi-ken search "steve jobs" --token a1b2c3d4e5f6g7h8i9j0
-  $ kagi-ken summarize --url "https://example.com" --type summary
-  $ kagi-ken help search
-  $ kagi-ken summarize --help
+  $ kagi-ken-cli search "steve jobs" --token a1b2c3d4e5f6g7h8i9j0
+  $ kagi-ken-cli summarize --url "https://example.com" --type summary
+  $ kagi-ken-cli help search
+  $ kagi-ken-cli summarize --help
 
 ${AUTHENTICATION_HELP}
       `,

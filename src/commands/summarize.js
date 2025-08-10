@@ -1,5 +1,5 @@
 /**
- * @fileoverview Summarize command implementation for kagi-ken CLI
+ * @fileoverview Summarize command implementation for kagi-ken-cli
  */
 
 import { Command } from "commander";
@@ -63,9 +63,9 @@ function createSummarizeCommand() {
       "after",
       `
 Examples:
-  $ kagi-ken summarize --url "https://example.com/article" --token a1b2c3d4e5f6g7h8i9j0
-  $ kagi-ken summarize --text "Long text to summarize..." --type takeaway
-  $ kagi-ken summarize --url "https://example.com" --language DE
+  $ kagi-ken-cli summarize --url "https://example.com/article" --token a1b2c3d4e5f6g7h8i9j0
+  $ kagi-ken-cli summarize --text "Long text to summarize..." --type takeaway
+  $ kagi-ken-cli summarize --url "https://example.com" --language DE
 
 ${AUTHENTICATION_HELP}
       `,

@@ -32,7 +32,7 @@ Each module includes a descriptive fileoverview comment:
 ```javascript
 // From index.js:4-6
 /**
- * @fileoverview CLI entry point for kagi-ken.
+ * @fileoverview CLI entry point for kagi-ken-cli.
  * Command dispatcher supporting search and help commands.
  */
 ```
@@ -77,7 +77,7 @@ The main CLI uses a command dispatcher pattern with separate command implementat
 const program = new Command();
 
 program
-  .name("kagi-ken")
+  .name("kagi-ken-cli")
   .description("Search Kagi.com using session tokens and return structured JSON results matching the Kagi API format")
   .version(version)
   .addHelpText("after", `
@@ -207,7 +207,7 @@ if (!title || !url) {
 
 1. **Install dependencies**: `npm install` (installs Commander.js and Cheerio from `package.json:24-27`)
 2. **Run during development**: `./index.js search "query" --token token` 
-3. **Test globally**: `npm link` then `kagi-ken search "query" --token token`
+3. **Test globally**: `npm link` then `kagi-ken-cli search "query" --token token`
 
 ### Adding New Search Result Types
 
@@ -227,15 +227,15 @@ Test error conditions by modifying token or network connectivity:
 
 ```javascript
 // Test invalid token
-kagi-ken search "query" --token invalid
+kagi-ken-cli search "query" --token invalid
 
 // Test missing token (no file and no flag)
 rm ~/.kagi_session_token
-kagi-ken search "query"
+kagi-ken-cli search "query"
 
 // Test with token file
 echo "your_token_here" > ~/.kagi_session_token
-kagi-ken search "query"
+kagi-ken-cli search "query"
 
 // Test network error (modify URL in src/web-client.js:32)
 ```

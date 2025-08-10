@@ -4,7 +4,7 @@
 
 ## Overview
 
-The kagi-ken tool implements a three-layer architecture that transforms Kagi.com HTML search pages into structured JSON data matching the official Kagi API format. The system operates as a command-line interface that accepts search queries and authentication tokens, performs HTTP requests to Kagi's web interface, and parses the resulting HTML to extract search results using CSS selectors.
+The kagi-ken-cli tool implements a three-layer architecture that transforms Kagi.com HTML search pages into structured JSON data matching the official Kagi API format. The system operates as a command-line interface that accepts search queries and authentication tokens, performs HTTP requests to Kagi's web interface, and parses the resulting HTML to extract search results using CSS selectors.
 
 The architecture follows a clean separation of concerns with the CLI layer handling user interaction and authentication, the HTTP layer managing web requests with proper headers and error handling, and the parsing layer extracting structured data from Kagi's HTML response format. This design allows the tool to act as a bridge between Kagi's web interface and applications expecting API-formatted responses.
 

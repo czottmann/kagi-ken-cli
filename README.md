@@ -1,4 +1,4 @@
-# kagi-ken
+# kagi-ken-cli
 
 A Node.js CLI tool that provides access to Kagi.com services using session tokens:
 
@@ -25,28 +25,28 @@ The [Kagi API](https://help.kagi.com/kagi/api/overview.html) requires a separate
 
 ```bash
 # Show help
-kagi-ken
-kagi-ken help
+kagi-ken-cli
+kagi-ken-cli help
 
 # Set your session token once
 echo "$kagi_session_token" > ~/.kagi_session_token
 
 # Search and get JSON results
-kagi-ken search "steve jobs"
+kagi-ken-cli search "steve jobs"
 
 # Summarize a URL (default: type=summary, language=EN)
-kagi-ken summarize --url "https://en.wikipedia.org/wiki/Steve_Jobs"
+kagi-ken-cli summarize --url "https://en.wikipedia.org/wiki/Steve_Jobs"
 
 # Summarize text with custom options
-kagi-ken summarize --text "Long article content..." --type takeaway --language DE
+kagi-ken-cli summarize --text "Long article content..." --type takeaway --language DE
 ```
 
 ### Usage with token flag
 
 ```bash
 # Pass token directly for any command
-kagi-ken search "steve jobs" --token $kagi_session_token
-kagi-ken summarize --url "https://example.com" --token $kagi_session_token
+kagi-ken-cli search "steve jobs" --token $kagi_session_token
+kagi-ken-cli summarize --url "https://example.com" --token $kagi_session_token
 ```
 
 

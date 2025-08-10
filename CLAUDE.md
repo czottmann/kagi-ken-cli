@@ -33,7 +33,7 @@ The project is fully implemented and functional.
 ## Implementation Notes
 
 ### CLI Structure
-The tool uses a command-based structure with Commander.js. Callable as `kagi-ken` after npm installation, or `./index.js` during development. Main commands:
+The tool uses a command-based structure with Commander.js. Callable as `kagi-ken-cli` after npm installation, or `./index.js` during development. Main commands:
 - `search <query>` - Perform a search with optional --token flag
 - `summarize` - Summarize URL or text content with --url/--text, --type, --language options
 - `help [command]` - Display help for commands
@@ -71,22 +71,22 @@ Uses Cheerio with CSS selectors to extract search results from Kagi's HTML:
 
 ```bash
 # Show help
-kagi-ken
-kagi-ken help
-kagi-ken help search
-kagi-ken summarize --help
+kagi-ken-cli
+kagi-ken-cli help
+kagi-ken-cli help search
+kagi-ken-cli summarize --help
 
 # Search with token flag
-kagi-ken search "search query" --token a1b2c3d4e5f6g7h8i9j0
+kagi-ken-cli search "search query" --token a1b2c3d4e5f6g7h8i9j0
 
 # Summarize URL with defaults (type=summary, language=EN)
-kagi-ken summarize --url "https://example.com/article" --token a1b2c3d4e5f6g7h8i9j0
+kagi-ken-cli summarize --url "https://example.com/article" --token a1b2c3d4e5f6g7h8i9j0
 
 # Summarize text with custom options
-kagi-ken summarize --text "Long text content..." --type takeaway --language DE --token token
+kagi-ken-cli summarize --text "Long text content..." --type takeaway --language DE --token token
 
 # Using token file for both commands
 echo "a1b2c3d4e5f6g7h8i9j0" > ~/.kagi_session_token
-kagi-ken search "search query"
-kagi-ken summarize --url "https://example.com"
+kagi-ken-cli search "search query"
+kagi-ken-cli summarize --url "https://example.com"
 ```

@@ -2,7 +2,7 @@
 
 # Project Overview
 
-kagi-ken is a Node.js CLI tool that enables programmatic access to Kagi.com search results without requiring paid API access. The tool authenticates using Kagi session tokens (obtained by logging into Kagi.com) instead of invite-only API keys, making it accessible to all Kagi users. It parses HTML search result pages and returns structured JSON data that matches Kagi's official Search API schema, providing a seamless integration path for applications that need search functionality.
+kagi-ken-cli is a Node.js CLI tool that enables programmatic access to Kagi.com search results without requiring paid API access. The tool authenticates using Kagi session tokens (obtained by logging into Kagi.com) instead of invite-only API keys, making it accessible to all Kagi users. It parses HTML search result pages and returns structured JSON data that matches Kagi's official Search API schema, providing a seamless integration path for applications that need search functionality.
 
 The project bridges the gap between web scraping and API access by providing a clean, command-line interface that outputs machine-readable JSON while handling authentication, error cases, and result parsing automatically. This approach allows developers to integrate Kagi search into their workflows, scripts, and applications without API costs or access limitations.
 
@@ -38,7 +38,7 @@ The project bridges the gap between web scraping and API access by providing a c
 
 **Node.js Requirements** - Node.js 18+ required for built-in fetch API support (`SPEC.md` line 11)
 
-**Installation Method** - Global NPM installation with `kagi-ken` binary command (`package.json` lines 6-8)
+**Installation Method** - Global NPM installation with `kagi-ken-cli` binary command (`package.json` lines 6-8)
 
 **Cross-Platform Compatibility** - Pure Node.js implementation with no platform-specific dependencies, executable on macOS, Linux, and Windows
 

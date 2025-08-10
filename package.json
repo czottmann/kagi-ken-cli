@@ -1,11 +1,11 @@
 {
-  "name": "kagi-ken",
+  "name": "kagi-ken-cli",
   "version": "1.4.1",
   "description": "A CLI tool providing access to Kagi.com services (search and summarizer) using session tokens. Outputs structured JSON matching official API schemas.",
   "type": "module",
   "main": "index.js",
   "bin": {
-    "kagi-ken": "index.js"
+    "kagi-ken-cli": "index.js"
   },
   "files": [
     "index.js",
@@ -33,10 +33,10 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/czottmann/kagi-ken.git"
+    "url": "git+https://github.com/czottmann/kagi-ken-cli.git"
   },
   "bugs": {
-    "url": "https://github.com/czottmann/kagi-ken/issues"
+    "url": "https://github.com/czottmann/kagi-ken-cli/issues"
   },
-  "homepage": "https://github.com/czottmann/kagi-ken#readme"
+  "homepage": "https://github.com/czottmann/kagi-ken-cli#readme"
 }

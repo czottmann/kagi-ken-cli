@@ -1,5 +1,5 @@
 /**
- * @fileoverview Search command implementation for kagi-ken CLI
+ * @fileoverview Search command implementation for kagi-ken-cli
  */
 
 import { Command } from "commander";
@@ -22,8 +22,8 @@ function createSearchCommand() {
       "after",
       `
 Examples:
-  $ kagi-ken search "steve jobs" --token a1b2c3d4e5f6g7h8i9j0
-  $ kagi-ken search "search query"
+  $ kagi-ken-cli search "steve jobs" --token a1b2c3d4e5f6g7h8i9j0
+  $ kagi-ken-cli search "search query"
 
 ${AUTHENTICATION_HELP}
       `,
