@@ -122,8 +122,6 @@ Since you're basically using the web search, **this tool inherits the setting in
 
 - **Architecture**: ES Modules with command-based CLI structure using Commander.js wrapper around core kagi-ken package
 - **Core Package**: `kagi-ken` package handles HTTP requests, HTML parsing, stream processing, and result formatting
-- **Search**: Core package uses Kagi's `/html/search` endpoint for server-side rendered results (HTML parsing)
-- **Summarizer**: Core package uses Kagi's `/mother/summary_labs` endpoint with streaming JSON responses
 - **Authentication**: Session token resolution handled by CLI, passed to core package functions
 - **Error Handling**: CLI handles command-line errors, core package handles network and parsing errors
 - **Module System**: Native ES6 imports with `node:` prefix for built-in modules and named imports from kagi-ken
