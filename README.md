@@ -1,6 +1,6 @@
 # kagi-ken-cli
 
-A lightweight Node.js CLI wrapper around the core `kagi-ken` package, providing command-line access to Kagi.com services using session tokens:
+A lightweight Node.js CLI wrapper around the [`kagi-ken` package](https://github.com/czottmann/kagi-ken), providing command-line access to Kagi.com services using Kagi session tokens:
 
 - **Search**: Searches Kagi.com and returns structured JSON data matching Kagi's official search API schema
 - **Summarizer**: Uses Kagi's Summarizer to create summaries from URLs or text content
