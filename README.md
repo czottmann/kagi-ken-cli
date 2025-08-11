@@ -103,7 +103,7 @@ Get your Kagi session token:
 ## Installation
 
 ```bash
-npm install -g git@github.com:czottmann/kagi-ken-cli.git
+npm install -g github:czottmann/kagi-ken-cli
 ```
 
 ## Tips
