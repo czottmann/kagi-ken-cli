@@ -1,6 +1,6 @@
 {
   "name": "kagi-ken-cli",
-  "version": "1.6.0",
+  "version": "1.5.1",
   "description": "A CLI tool providing access to Kagi.com services (search and summarizer) using session tokens. Outputs structured JSON matching official API schemas.",
   "type": "module",
   "main": "src/index.js",
