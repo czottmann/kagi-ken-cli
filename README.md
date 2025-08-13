@@ -1,6 +1,6 @@
 # kagi-ken-cli
 
-A lightweight Node.js CLI wrapper around the [`kagi-ken` package](https://github.com/czottmann/kagi-ken), providing command-line access to Kagi.com services using Kagi session tokens:
+A lightweight Node CLI wrapper around the [`kagi-ken` package](https://github.com/czottmann/kagi-ken), providing command-line access to Kagi.com services using Kagi session tokens:
 
 - **Search**: Searches Kagi.com and returns structured JSON data matching Kagi's official search API schema
 - **Summarizer**: Uses Kagi's Summarizer to create summaries from URLs or text content
@@ -48,7 +48,6 @@ kagi-ken-cli summarize --text "Long article content..." --type takeaway --langua
 kagi-ken-cli search "steve jobs" --token $kagi_session_token
 kagi-ken-cli summarize --url "https://example.com" --token $kagi_session_token
 ```
-
 
 ### JSON output formats
 
@@ -134,6 +133,12 @@ This project is neither affiliated with nor endorsed by Kagi. I'm just a very ha
 
 > [!TIP]
 > I make Shortcuts-related macOS & iOS productivity apps like [Actions For Obsidian](https://actions.work/actions-for-obsidian), [Browser Actions](https://actions.work/browser-actions) (which adds Shortcuts support for several major browsers), and [BarCuts](https://actions.work/barcuts) (a surprisingly useful contextual Shortcuts launcher). Check them out!
+
+
+## Related Projects
+
+- [czottmann/kagi-ken](https://github.com/czottmann/kagi-ken) - Unofficial session token-based Kagi client, Node
+- [czottmann/kagi-ken-mcp](https://github.com/czottmann/kagi-ken-mcp) - Unofficial session token-based Kagi MCP server, Node
 
 ---
 

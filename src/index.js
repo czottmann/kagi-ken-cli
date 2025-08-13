@@ -7,9 +7,9 @@
 
 import { Command } from "commander";
 import { readFileSync } from "node:fs";
-import { createSearchCommand } from "./src/commands/search.js";
-import { createSummarizeCommand } from "./src/commands/summarize.js";
-import { AUTHENTICATION_HELP } from "./src/utils/help-text.js";
+import { createSearchCommand } from "./commands/search.js";
+import { createSummarizeCommand } from "./commands/summarize.js";
+import { AUTHENTICATION_HELP } from "./utils/help-text.js";
 
 const packageJson = JSON.parse(
   readFileSync(new URL("./package.json", import.meta.url), "utf8"),

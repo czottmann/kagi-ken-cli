@@ -8,12 +8,12 @@ importers:
 
   .:
     dependencies:
-      cheerio:
-        specifier: ^1.1.2
-        version: 1.1.2
       commander:
         specifier: ^14.0.0
         version: 14.0.0
+      kagi-ken:
+        specifier: github:czottmann/kagi-ken#1.0.0
+        version: https://codeload.github.com/czottmann/kagi-ken/tar.gz/369f2a19c60525b3146360b063190466d2084d34
 
 packages:
 
@@ -68,6 +68,10 @@ packages:
   iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
+
+  kagi-ken@https://codeload.github.com/czottmann/kagi-ken/tar.gz/369f2a19c60525b3146360b063190466d2084d34:
+    resolution: {tarball: https://codeload.github.com/czottmann/kagi-ken/tar.gz/369f2a19c60525b3146360b063190466d2084d34}
+    version: 1.0.0
 
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
@@ -172,6 +176,10 @@ snapshots:
   iconv-lite@0.6.3:
     dependencies:
       safer-buffer: 2.1.2
+
+  kagi-ken@https://codeload.github.com/czottmann/kagi-ken/tar.gz/369f2a19c60525b3146360b063190466d2084d34:
+    dependencies:
+      cheerio: 1.1.2
 
   nth-check@2.1.1:
     dependencies:
