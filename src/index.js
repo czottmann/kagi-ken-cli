@@ -12,7 +12,7 @@ import { createSummarizeCommand } from "./commands/summarize.js";
 import { AUTHENTICATION_HELP } from "./utils/help-text.js";
 
 const packageJson = JSON.parse(
-  readFileSync(new URL("./package.json", import.meta.url), "utf8"),
+  readFileSync(new URL("../package.json", import.meta.url), "utf8"),
 );
 const { version } = packageJson;
 
